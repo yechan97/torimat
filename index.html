@@ -68,6 +68,7 @@
             border-radius: 5px;
             color: #fff;
             font-weight: bold;
+            font-family: 'Gowun Dodum', sans-serif;
         }
         button.calculate {
             background-color: #81C784; /* Green */
@@ -109,6 +110,7 @@
             border: none;
             border-radius: 5px;
             font-weight: bold;
+            font-family: 'Gowun Dodum', sans-serif;
         }
         .region-buttons, .macro-buttons {
             margin-top: 20px;
@@ -123,6 +125,7 @@
             border: none;
             border-radius: 5px;
             display: inline-block;
+            font-family: 'Gowun Dodum', sans-serif;
         }
         .region-button {
             background-color: #64B5F6; /* Blue */
@@ -155,6 +158,7 @@
             border: none;
             border-radius: 5px;
             font-weight: bold;
+            font-family: 'Gowun Dodum', sans-serif;
         }
         .tabs {
             display: flex;
@@ -172,6 +176,7 @@
             font-size: 16px;
             font-weight: bold;
             margin: 0 5px;
+            font-family: 'Gowun Dodum', sans-serif;
         }
         .tab-button.active {
             background-color: #4CAF50;
@@ -193,6 +198,10 @@
             display: inline-block;
             background-color: #64B5F6; /* Blue */
             color: #fff;
+            font-family: 'Gowun Dodum', sans-serif;
+        }
+        .quick-button.active {
+            background-color: #4CAF50; /* Active color */
         }
         .hidden {
             display: none;
@@ -259,22 +268,22 @@
         <div id="estimate" class="tab-content hidden">
             <h1>견적 양식</h1>
             <div class="quick-buttons">
-                <button class="quick-button" onclick="showQuickButtons('25평/59㎡')">25평/59㎡</button>
-                <button class="quick-button" onclick="showQuickButtons('30평/74㎡')">30평/74㎡</button>
-                <button class="quick-button" onclick="showQuickButtons('34평/84㎡')">34평/84㎡</button>
-                <button class="quick-button" onclick="showQuickButtons('30평후')">30평후</button>
-                <button class="quick-button" onclick="showQuickButtons('40평초')">40평초</button>
-                <button class="quick-button" onclick="showQuickButtons('40평중후')">40평중후</button>
+                <button class="quick-button" onclick="toggleQuickButtons('25평/59㎡')">25평/59㎡</button>
+                <button class="quick-button" onclick="toggleQuickButtons('30평/74㎡')">30평/74㎡</button>
+                <button class="quick-button" onclick="toggleQuickButtons('34평/84㎡')">34평/84㎡</button>
+                <button class="quick-button" onclick="toggleQuickButtons('30평후')">30평후</button>
+                <button class="quick-button" onclick="toggleQuickButtons('40평초')">40평초</button>
+                <button class="quick-button" onclick="toggleQuickButtons('40평중후')">40평중후</button>
+            </div>
+            <div id="quick-options" class="quick-buttons hidden"></div>
+            <div class="input-group">
+                <label><b>80매트</b></label>
+                <input type="number" id="mat80" placeholder="수량 입력" value="0" onfocus="this.value=''">
             </div>
             <div class="input-group">
-                <label>80매트</label>
-                <input type="number" id="mat80" placeholder="숫자를 입력하세요" value="0">
+                <label><b>100매트</b></label>
+                <input type="number" id="mat100" placeholder="수량 입력" value="0" onfocus="this.value=''">
             </div>
-            <div class="input-group">
-                <label>100매트</label>
-                <input type="number" id="mat100" placeholder="숫자를 입력하세요" value="0">
-            </div>
-            <div id="quick-options" class="hidden"></div>
             <div class="buttons">
                 <button class="calculate" onclick="calculateEstimate()">견적 계산하기</button>
                 <button class="reset" onclick="resetEstimateValues()">초기화</button>
@@ -290,25 +299,270 @@
             <p>by_예찬</p>
         </div>
     </div>
-</body>
 <script>
-    function showTab(tab) {
-        const calculator = document.getElementById('calculator');
-        const estimate = document.getElementById('estimate');
-        const calcTab = document.getElementById('calc-tab');
-        const formTab = document.getElementById('form-tab');
+    function showTab(tabName) {
+        document.getElementById('calculator').classList.add('hidden');
+        document.getElementById('estimate').classList.add('hidden');
+        document.getElementById('calc-tab').classList.remove('active');
+        document.getElementById('form-tab').classList.remove('active');
 
-        if (tab === 'calculator') {
-            calculator.style.display = 'block';
-            estimate.style.display = 'none';
-            calcTab.classList.add('active');
-            formTab.classList.remove('active');
+        if (tabName === 'calculator') {
+            document.getElementById('calculator').classList.remove('hidden');
+            document.getElementById('calc-tab').classList.add('active');
         } else {
-            calculator.style.display = 'none';
-            estimate.style.display = 'block';
-            calcTab.classList.remove('active');
-            formTab.classList.add('active');
+            document.getElementById('estimate').classList.remove('hidden');
+            document.getElementById('form-tab').classList.add('active');
         }
+    }
+
+    function toggleQuickButtons(type) {
+        const buttons = document.querySelectorAll('.quick-button');
+        buttons.forEach(button => button.classList.remove('active'));
+
+        const selectedButton = Array.from(buttons).find(button => button.innerText === type);
+        if (selectedButton) {
+            if (selectedButton.classList.contains('active')) {
+                selectedButton.classList.remove('active');
+                document.getElementById('quick-options').classList.add('hidden');
+                document.getElementById('quick-options').innerHTML = '';
+            } else {
+                selectedButton.classList.add('active');
+                showQuickButtons(type);
+            }
+        }
+    }
+
+    function showQuickButtons(type) {
+        let buttonsHtml = '';
+        switch (type) {
+            case '25평/59㎡':
+                buttonsHtml = `
+                    <button class="quick-button" onclick="setEstimateValues(40, 27)">거복</button>
+                    <button class="quick-button" onclick="setEstimateValues(50, 33)">거복주</button>
+                `;
+                break;
+            case '30평/74㎡':
+                buttonsHtml = `
+                    <button class="quick-button" onclick="setEstimateValues(45, 31)">거복</button>
+                    <button class="quick-button" onclick="setEstimateValues(60, 41)">거복주</button>
+                `;
+                break;
+            case '34평/84㎡':
+                buttonsHtml = `
+                    <button class="quick-button" onclick="setEstimateValues(50, 34)">거복</button>
+                    <button class="quick-button" onclick="setEstimateValues(60, 41)">거복아</button>
+                    <button class="quick-button" onclick="setEstimateValues(68, 45)">거복주</button>
+                `;
+                break;
+            case '30평후':
+                buttonsHtml = `
+                    <button class="quick-button" onclick="setEstimateValues(58, 40)">거복</button>
+                    <button class="quick-button" onclick="setEstimateValues(75, 51)">거복주</button>
+                `;
+                break;
+            case '40평초':
+                buttonsHtml = `
+                    <button class="quick-button" onclick="setEstimateValues(63, 43)">거복</button>
+                    <button class="quick-button" onclick="setEstimateValues(80, 54)">거복주</button>
+                `;
+                break;
+            case '40평중후':
+                buttonsHtml = `
+                    <button class="quick-button" onclick="setEstimateValues(68, 47)">거복</button>
+                    <button class="quick-button" onclick="setEstimateValues(85, 58)">거복주</button>
+                `;
+                break;
+            default:
+                buttonsHtml = '';
+        }
+        document.getElementById('quick-options').innerHTML = buttonsHtml;
+        document.getElementById('quick-options').classList.remove('hidden');
+    }
+
+    function setEstimateValues(mat80, mat100) {
+        document.getElementById('mat80').value = mat80;
+        document.getElementById('mat100').value = mat100;
+    }
+
+    function calculateEstimate() {
+        const mat80 = parseInt(document.getElementById('mat80').value) || 0;
+        const mat100 = parseInt(document.getElementById('mat100').value) || 0;
+
+        const price80 = {
+            '자이언트매트': mat80 * 44000,
+            '자이언트플러스매트': mat80 * 47000
+        };
+
+        const price100 = {
+            '자이언트와이드매트': mat100 * 75000,
+            '빅토리매트': mat100 * 79000
+        };
+
+        const resultHtml = `
+            <p>자이언트매트: ${mat80}장, ${price80['자이언트매트'].toLocaleString()}원 <button class="copy-button" onclick="copyText('자이언트매트: ${mat80}장, ${price80['자이언트매트'].toLocaleString()}원')">복사하기</button></p>
+            <p>자이언트플러스매트: ${mat80}장, ${price80['자이언트플러스매트'].toLocaleString()}원 <button class="copy-button" onclick="copyText('자이언트플러스매트: ${mat80}장, ${price80['자이언트플러스매트'].toLocaleString()}원')">복사하기</button></p>
+            <p>자이언트와이드매트: ${mat100}장, ${price100['자이언트와이드매트'].toLocaleString()}원 <button class="copy-button" onclick="copyText('자이언트와이드매트: ${mat100}장, ${price100['자이언트와이드매트'].toLocaleString()}원')">복사하기</button></p>
+            <p>빅토리매트: ${mat100}장, ${price100['빅토리매트'].toLocaleString()}원 <button class="copy-button" onclick="copyText('빅토리매트: ${mat100}장, ${price100['빅토리매트'].toLocaleString()}원')">복사하기</button></p>
+        `;
+
+        document.getElementById('price-result').innerHTML = resultHtml;
+    }
+
+    function resetEstimateValues() {
+        document.getElementById('mat80').value = 0;
+        document.getElementById('mat100').value = 0;
+        document.getElementById('price-result').innerHTML = "";
+    }
+
+    function copyText(text) {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        alert('결과가 클립보드에 복사되었습니다.');
+    }
+
+    function copyRegionEstimate(region) {
+        const mat80 = parseInt(document.getElementById('mat80').value) || 0;
+        const mat100 = parseInt(document.getElementById('mat100').value) || 0;
+
+        const matCounts = {
+            '자이언트매트': mat80,
+            '빅토리매트': mat100
+        };
+
+        let regionText = {
+            '수도권': `
+🎉 예상 견적은 다음과 같습니다
+
+💚자이언트매트💚_80x80(44,000원)
+💚자이언트플러스매트💚_80x80+논슬립기능(47,000원)
+약 ${matCounts['자이언트매트']}장 예상됩니다.
+
+💚자이언트와이드매트💚_120x80매트 논슬립기능(75,000원)
+💚빅토리매트💚_1미터x1미터+ 논슬립기능(79,000원 신제품 출시 한정가)
+약 ${matCounts['빅토리매트']}장 예상됩니다.
+
+✅ 실제 시공 후 사용된 매트만큼만 결제해 주시면 됩니다.
+✅ 견적과 실제 시공 장수에 오차가 있을 수 있습니다.
+✅ 본사 직접 시공 & 전문가 시공 방침을 준수합니다.
+✅ 80매트 기준 50장 미만 시공비가 10만원 발생됩니다.
+✅ 100/120매트 기준 40장 미만 시공비가 10만원 발생됩니다.
+            `.trim(),
+            '충청': `
+🎉 예상 견적은 다음과 같습니다
+
+💚자이언트매트💚_80x80(44,000원)
+💚자이언트플러스매트💚_80x80+논슬립기능(47,000원)
+약 ${matCounts['자이언트매트']}장 예상됩니다.
+
+💚자이언트와이드매트💚_120x80매트 논슬립기능(75,000원)
+💚빅토리매트💚_1미터x1미터+ 논슬립기능(79,000원 신제품 출시 한정가)
+약 ${matCounts['빅토리매트']}장 예상됩니다.
+
+✅ 실제 시공 후 사용된 매트만큼만 결제해 주시면 됩니다.
+✅ 견적과 실제 시공 장수에 오차가 있을 수 있습니다.
+✅ 본사 직접 시공 & 전문가 시공 방침에 따라 시공비가 10만 원 부과됩니다.
+            `.trim(),
+            '지방': `
+🎉 예상 견적은 다음과 같습니다
+
+💚자이언트매트💚_80x80(44,000원)
+💚자이언트플러스매트💚_80x80+논슬립기능(47,000원)
+약 ${matCounts['자이언트매트']}장 예상됩니다.
+
+💚자이언트와이드매트💚_120x80매트 논슬립기능(75,000원)
+💚빅토리매트💚_1미터x1미터+ 논슬립기능(79,000원 신제품 출시 한정가)
+약 ${matCounts['빅토리매트']}장 예상됩니다.
+
+✅ 실제 시공 후 사용된 매트만큼만 결제해 주시면 됩니다.
+✅ 견적과 실제 시공 장수에 오차가 있을 수 있습니다.
+✅ 본사 직접 시공 & 전문가 시공 방침에 따라 시공비, 출장비 각 10만 원 부과됩니다.
+            `.trim()
+        };
+
+        const textArea = document.createElement('textarea');
+        textArea.value = regionText[region];
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        alert('결과가 클립보드에 복사되었습니다.');
+    }
+
+    function copyRegion(region) {
+        let matCounts = {
+            '자이언트매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[0].split(': ')[1],
+            '빅토리매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[1].split(': ')[1],
+            '자이언트와이드매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[2].split(': ')[1]
+        };
+
+        let prices = {
+            '자이언트매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[0].split(': ')[1],
+            '자이언트플러스매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[1].split(': ')[1],
+            '빅토리매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[2].split(': ')[1],
+            '자이언트와이드매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[3].split(': ')[1]
+        };
+
+        let regionText = {
+            '수도권': `
+🎉 예상 견적은 다음과 같습니다
+
+💚자이언트매트💚_80x80(44,000원)
+💚자이언트플러스매트💚_80x80+논슬립기능(47,000원)
+약 ${matCounts['자이언트매트']}장 예상됩니다.
+
+💚자이언트와이드매트💚_120x80매트 논슬립기능(75,000원)
+💚빅토리매트💚_1미터x1미터+ 논슬립기능(79,000원 신제품 출시 한정가)
+약 ${matCounts['빅토리매트']}장 예상됩니다.
+
+✅ 실제 시공 후 사용된 매트만큼만 결제해 주시면 됩니다.
+✅ 견적과 실제 시공 장수에 오차가 있을 수 있습니다.
+✅ 본사 직접 시공 & 전문가 시공 방침을 준수합니다.
+✅ 80매트 기준 50장 미만 시공비가 10만원 발생됩니다.
+✅ 100/120매트 기준 40장 미만 시공비가 10만원 발생됩니다.
+            `.trim(),
+            '충청': `
+🎉 예상 견적은 다음과 같습니다
+
+💚자이언트매트💚_80x80(44,000원)
+💚자이언트플러스매트💚_80x80+논슬립기능(47,000원)
+약 ${matCounts['자이언트매트']}장 예상됩니다.
+
+💚자이언트와이드매트💚_120x80매트 논슬립기능(75,000원)
+💚빅토리매트💚_1미터x1미터+ 논슬립기능(79,000원 신제품 출시 한정가)
+약 ${matCounts['빅토리매트']}장 예상됩니다.
+
+✅ 실제 시공 후 사용된 매트만큼만 결제해 주시면 됩니다.
+✅ 견적과 실제 시공 장수에 오차가 있을 수 있습니다.
+✅ 본사 직접 시공 & 전문가 시공 방침에 따라 시공비가 10만 원 부과됩니다.
+            `.trim(),
+            '지방': `
+🎉 예상 견적은 다음과 같습니다
+
+💚자이언트매트💚_80x80(44,000원)
+💚자이언트플러스매트💚_80x80+논슬립기능(47,000원)
+약 ${matCounts['자이언트매트']}장 예상됩니다.
+
+💚자이언트와이드매트💚_120x80매트 논슬립기능(75,000원)
+💚빅토리매트💚_1미터x1미터+ 논슬립기능(79,000원 신제품 출시 한정가)
+약 ${matCounts['빅토리매트']}장 예상됩니다.
+
+✅ 실제 시공 후 사용된 매트만큼만 결제해 주시면 됩니다.
+✅ 견적과 실제 시공 장수에 오차가 있을 수 있습니다.
+✅ 본사 직접 시공 & 전문가 시공 방침에 따라 시공비, 출장비 각 10만 원 부과됩니다.
+            `.trim()
+        };
+
+        const textArea = document.createElement('textarea');
+        textArea.value = regionText[region];
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        alert('결과가 클립보드에 복사되었습니다.');
     }
 
     function calculate() {
@@ -402,10 +656,10 @@
         };
 
         let resultText = `
-자이언트매트: ${matCounts['자이언트매트']}, ${prices['자이언트매트']}
-자이언트플러스매트: ${matCounts['자이언트매트']}, ${prices['자이언트플러스매트']}
-빅토리매트: ${matCounts['빅토리매트']}, ${prices['빅토리매트']}
-자이언트와이드매트: ${matCounts['자이언트와이드매트']}, ${prices['자이언트와이드매트']}
+자이언트매트: ${matCounts['자이언트매트']}장, ${prices['자이언트매트']}
+자이언트플러스매트: ${matCounts['자이언트매트']}장, ${prices['자이언트플러스매트']}
+빅토리매트: ${matCounts['빅토리매트']}장, ${prices['빅토리매트']}
+자이언트와이드매트: ${matCounts['자이언트와이드매트']}장, ${prices['자이언트와이드매트']}
         `.trim();
 
         const textArea = document.createElement('textarea');
@@ -417,237 +671,9 @@
         alert('결과가 클립보드에 복사되었습니다.');
     }
 
-    function copyRegion(region) {
-        let matCounts = {
-            '자이언트매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[0].split(': ')[1],
-            '빅토리매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[1].split(': ')[1],
-            '자이언트와이드매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[2].split(': ')[1]
-        };
-
-        let prices = {
-            '자이언트매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[0].split(': ')[1],
-            '자이언트플러스매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[1].split(': ')[1],
-            '빅토리매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[2].split(': ')[1],
-            '자이언트와이드매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[3].split(': ')[1]
-        };
-
-        let regionText = {
-            '수도권': `
-🎉 예상 견적은 다음과 같습니다
-
-💚자이언트매트💚_80x80(44,000원)
-💚자이언트플러스매트💚_80x80+논슬립기능(47,000원)
-약 ${matCounts['자이언트매트']} 예상됩니다.
-
-💚자이언트와이드매트💚_120x80매트 논슬립기능(75,000원)
-💚빅토리매트💚_1미터x1미터+ 논슬립기능(79,000원 신제품 출시 한정가)
-약 ${matCounts['빅토리매트']} 예상됩니다.
-
-✅ 실제 시공 후 사용된 매트만큼만 결제해 주시면 됩니다.
-✅ 견적과 실제 시공 장수에 오차가 있을 수 있습니다.
-✅ 본사 직접 시공 & 전문가 시공 방침을 준수합니다.
-✅ 80매트 기준 50장 미만 시공비가 10만원 발생됩니다.
-✅ 100/120매트 기준 40장 미만 시공비가 10만원 발생됩니다.
-            `.trim(),
-            '충청': `
-🎉 예상 견적은 다음과 같습니다
-
-💚자이언트매트💚_80x80(44,000원)
-💚자이언트플러스매트💚_80x80+논슬립기능(47,000원)
-약 ${matCounts['자이언트매트']} 예상됩니다.
-
-💚자이언트와이드매트💚_120x80매트 논슬립기능(75,000원)
-💚빅토리매트💚_1미터x1미터+ 논슬립기능(79,000원 신제품 출시 한정가)
-약 ${matCounts['빅토리매트']} 예상됩니다.
-
-✅ 실제 시공 후 사용된 매트만큼만 결제해 주시면 됩니다.
-✅ 견적과 실제 시공 장수에 오차가 있을 수 있습니다.
-✅ 본사 직접 시공 & 전문가 시공 방침에 따라 시공비가 10만 원 부과됩니다.
-            `.trim(),
-            '지방': `
-🎉 예상 견적은 다음과 같습니다
-
-💚자이언트매트💚_80x80(44,000원)
-💚자이언트플러스매트💚_80x80+논슬립기능(47,000원)
-약 ${matCounts['자이언트매트']} 예상됩니다.
-
-💚자이언트와이드매트💚_120x80매트 논슬립기능(75,000원)
-💚빅토리매트💚_1미터x1미터+ 논슬립기능(79,000원 신제품 출시 한정가)
-약 ${matCounts['빅토리매트']} 예상됩니다.
-
-✅ 실제 시공 후 사용된 매트만큼만 결제해 주시면 됩니다.
-✅ 견적과 실제 시공 장수에 오차가 있을 수 있습니다.
-✅ 본사 직접 시공 & 전문가 시공 방침에 따라 시공비, 출장비 각 10만 원 부과됩니다.
-            `.trim()
-        };
-
-        const textArea = document.createElement('textarea');
-        textArea.value = regionText[region];
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textArea);
-        alert('결과가 클립보드에 복사되었습니다.');
-    }
-
-    function calculateEstimate() {
-        const mat80 = parseInt(document.getElementById('mat80').value) || 0;
-        const mat100 = parseInt(document.getElementById('mat100').value) || 0;
-
-        const price80 = {
-            '자이언트매트': mat80 * 44000,
-            '자이언트플러스매트': mat80 * 47000
-        };
-
-        const price100 = {
-            '자이언트와이드매트': mat100 * 75000,
-            '빅토리매트': mat100 * 79000
-        };
-
-        const resultHtml = `
-            <p>자이언트매트: ${mat80}장, ${price80['자이언트매트'].toLocaleString()}원 <button class="copy-button" onclick="copyText('자이언트매트: ${mat80}장, ${price80['자이언트매트'].toLocaleString()}원')">복사하기</button></p>
-            <p>자이언트플러스매트: ${mat80}장, ${price80['자이언트플러스매트'].toLocaleString()}원 <button class="copy-button" onclick="copyText('자이언트플러스매트: ${mat80}장, ${price80['자이언트플러스매트'].toLocaleString()}원')">복사하기</button></p>
-            <p>자이언트와이드매트: ${mat100}장, ${price100['자이언트와이드매트'].toLocaleString()}원 <button class="copy-button" onclick="copyText('자이언트와이드매트: ${mat100}장, ${price100['자이언트와이드매트'].toLocaleString()}원')">복사하기</button></p>
-            <p>빅토리매트: ${mat100}장, ${price100['빅토리매트'].toLocaleString()}원 <button class="copy-button" onclick="copyText('빅토리매트: ${mat100}장, ${price100['빅토리매트'].toLocaleString()}원')">복사하기</button></p>
-        `;
-
-        document.getElementById('price-result').innerHTML = resultHtml;
-    }
-
-    function resetEstimateValues() {
-        document.getElementById('mat80').value = 0;
-        document.getElementById('mat100').value = 0;
-        document.getElementById('price-result').innerHTML = "";
-    }
-
-    function showQuickButtons(type) {
-        let buttonsHtml = '';
-        switch (type) {
-            case '25평/59㎡':
-                buttonsHtml = `
-                    <button class="quick-button" onclick="setEstimateValues(40, 27)">거복</button>
-                    <button class="quick-button" onclick="setEstimateValues(50, 33)">거복주</button>
-                `;
-                break;
-            case '30평/74㎡':
-                buttonsHtml = `
-                    <button class="quick-button" onclick="setEstimateValues(45, 31)">거복</button>
-                    <button class="quick-button" onclick="setEstimateValues(60, 41)">거복주</button>
-                `;
-                break;
-            case '34평/84㎡':
-                buttonsHtml = `
-                    <button class="quick-button" onclick="setEstimateValues(50, 34)">거복</button>
-                    <button class="quick-button" onclick="setEstimateValues(60, 41)">거복아</button>
-                    <button class="quick-button" onclick="setEstimateValues(68, 45)">거복주</button>
-                `;
-                break;
-            case '30평후':
-                buttonsHtml = `
-                    <button class="quick-button" onclick="setEstimateValues(58, 40)">거복</button>
-                    <button class="quick-button" onclick="setEstimateValues(75, 51)">거복주</button>
-                `;
-                break;
-            case '40평초':
-                buttonsHtml = `
-                    <button class="quick-button" onclick="setEstimateValues(63, 43)">거복</button>
-                    <button class="quick-button" onclick="setEstimateValues(80, 54)">거복주</button>
-                `;
-                break;
-            case '40평중후':
-                buttonsHtml = `
-                    <button class="quick-button" onclick="setEstimateValues(68, 47)">거복</button>
-                    <button class="quick-button" onclick="setEstimateValues(85, 58)">거복주</button>
-                `;
-                break;
-            default:
-                buttonsHtml = '';
-        }
-        document.getElementById('quick-options').innerHTML = buttonsHtml;
-        document.getElementById('quick-options').classList.remove('hidden');
-    }
-
-    function setEstimateValues(mat80, mat100) {
-        document.getElementById('mat80').value = mat80;
-        document.getElementById('mat100').value = mat100;
-    }
-
-    function copyText(text) {
-        const textArea = document.createElement('textarea');
-        textArea.value = text;
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textArea);
-        alert('결과가 클립보드에 복사되었습니다.');
-    }
-
-    function copyRegionEstimate(region) {
-        const mat80 = parseInt(document.getElementById('mat80').value) || 0;
-        const mat100 = parseInt(document.getElementById('mat100').value) || 0;
-
-        const matCounts = {
-            '자이언트매트': mat80,
-            '빅토리매트': mat100
-        };
-
-        let regionText = {
-            '수도권': `
-🎉 예상 견적은 다음과 같습니다
-
-💚자이언트매트💚_80x80(44,000원)
-💚자이언트플러스매트💚_80x80+논슬립기능(47,000원)
-약 ${matCounts['자이언트매트']}장 예상됩니다.
-
-💚자이언트와이드매트💚_120x80매트 논슬립기능(75,000원)
-💚빅토리매트💚_1미터x1미터+ 논슬립기능(79,000원 신제품 출시 한정가)
-약 ${matCounts['빅토리매트']}장 예상됩니다.
-
-✅ 실제 시공 후 사용된 매트만큼만 결제해 주시면 됩니다.
-✅ 견적과 실제 시공 장수에 오차가 있을 수 있습니다.
-✅ 본사 직접 시공 & 전문가 시공 방침을 준수합니다.
-✅ 80매트 기준 50장 미만 시공비가 10만원 발생됩니다.
-✅ 100/120매트 기준 40장 미만 시공비가 10만원 발생됩니다.
-            `.trim(),
-            '충청': `
-🎉 예상 견적은 다음과 같습니다
-
-💚자이언트매트💚_80x80(44,000원)
-💚자이언트플러스매트💚_80x80+논슬립기능(47,000원)
-약 ${matCounts['자이언트매트']}장 예상됩니다.
-
-💚자이언트와이드매트💚_120x80매트 논슬립기능(75,000원)
-💚빅토리매트💚_1미터x1미터+ 논슬립기능(79,000원 신제품 출시 한정가)
-약 ${matCounts['빅토리매트']}장 예상됩니다.
-
-✅ 실제 시공 후 사용된 매트만큼만 결제해 주시면 됩니다.
-✅ 견적과 실제 시공 장수에 오차가 있을 수 있습니다.
-✅ 본사 직접 시공 & 전문가 시공 방침에 따라 시공비가 10만 원 부과됩니다.
-            `.trim(),
-            '지방': `
-🎉 예상 견적은 다음과 같습니다
-
-💚자이언트매트💚_80x80(44,000원)
-💚자이언트플러스매트💚_80x80+논슬립기능(47,000원)
-약 ${matCounts['자이언트매트']}장 예상됩니다.
-
-💚자이언트와이드매트💚_120x80매트 논슬립기능(75,000원)
-💚빅토리매트💚_1미터x1미터+ 논슬립기능(79,000원 신제품 출시 한정가)
-약 ${matCounts['빅토리매트']}장 예상됩니다.
-
-✅ 실제 시공 후 사용된 매트만큼만 결제해 주시면 됩니다.
-✅ 견적과 실제 시공 장수에 오차가 있을 수 있습니다.
-✅ 본사 직접 시공 & 전문가 시공 방침에 따라 시공비, 출장비 각 10만 원 부과됩니다.
-            `.trim()
-        };
-
-        const textArea = document.createElement('textarea');
-        textArea.value = regionText[region];
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textArea);
-        alert('결과가 클립보드에 복사되었습니다.');
-    }
+    document.addEventListener('DOMContentLoaded', function() {
+        showTab('estimate');
+    });
 </script>
+</body>
 </html>
