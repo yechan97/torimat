@@ -26,7 +26,6 @@
             border-radius: 10px;
             box-sizing: border-box;
             text-align: center;
-            display: none; /* Initially hidden */
         }
         h1 {
             color: #7CB342; /* 초록색 */
@@ -157,6 +156,26 @@
             border-radius: 5px;
             font-weight: bold;
         }
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .tab-button {
+            flex: 1;
+            padding: 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #81C784;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 0 5px;
+        }
+        .tab-button.active {
+            background-color: #4CAF50;
+        }
         .quick-buttons {
             display: flex;
             flex-wrap: wrap;
@@ -181,92 +200,91 @@
     </style>
 </head>
 <body>
-    <div class="password-container">
-        <input type="password" id="password" class="password-input" placeholder="비밀번호를 입력하세요">
-        <button onclick="checkPassword()" class="password-button">확인</button>
-    </div>
-    <div class="container" id="calculator">
-        <h1>토리매트 계산기</h1>
-        <div class="input-group">
-            <label><b>거실</b></label>
-            <input type="number" id="거실_가로" placeholder="가로(cm)" value="0" onfocus="this.value=''">
-            <input type="number" id="거실_세로" placeholder="세로(cm)" value="0" onfocus="this.value=''">
+    <div class="container">
+        <div class="tabs">
+            <button class="tab-button" id="calc-tab" onclick="showTab('calculator')">계산기</button>
+            <button class="tab-button" id="form-tab" onclick="showTab('estimate')">양식</button>
         </div>
-        <div class="input-group">
-            <label><b>복도</b></label>
-            <input type="number" id="복도_가로" placeholder="가로(cm)" value="0" onfocus="this.value=''">
-            <input type="number" id="복도_세로" placeholder="세로(cm)" value="0" onfocus="this.value=''">
-        </div>
-        <div class="input-group">
-            <label><b>주방</b></label>
-            <input type="number" id="주방_가로" placeholder="가로(cm)" value="0" onfocus="this.value=''">
-            <input type="number" id="주방_세로" placeholder="세로(cm)" value="0" onfocus="this.value=''">
-        </div>
-        <div class="input-group">
-            <label><b>작은 방</b></label>
-            <input type="number" id="작은방_가로" placeholder="가로(cm)" value="0" onfocus="this.value=''">
-            <input type="number" id="작은방_세로" placeholder="세로(cm)" value="0" onfocus="this.value=''">
-        </div>
-        <div class="input-group">
-            <label><b>큰 방</b></label>
-            <input type="number" id="큰방_가로" placeholder="가로(cm)" value="0" onfocus="this.value=''">
-            <input type="number" id="큰방_세로" placeholder="세로(cm)" value="0" onfocus="this.value=''">
-        </div>
-        <div class="input-group">
-            <label><b>발코니</b></label>
-            <input type="number" id="발코니_가로" placeholder="가로(cm)" value="0" onfocus="this.value=''">
-            <input type="number" id="발코니_세로" placeholder="세로(cm)" value="0" onfocus="this.value=''">
-        </div>
-        <div class="input-group">
-            <label><b>기타</b></label>
-            <input type="number" id="기타_가로" placeholder="가로(cm)" value="0" onfocus="this.value=''">
-            <input type="number" id="기타_세로" placeholder="세로(cm)" value="0" onfocus="this.value=''">
-        </div>
-        <div class="buttons">
-            <button class="calculate" onclick="calculate()">계산하기</button>
-            <button class="reset" onclick="resetValues()">초기화</button>
-        </div>
-        <div id="result"></div>
-        <div id="estimate-guide" style="display: none;">
-            <h2>예상 견적 안내</h2>
-            <div class="region-buttons">
-                <button class="region-button" onclick="copyRegion('수도권')"><b>수도권</b></button>
-                <button class="region-button" onclick="copyRegion('충청')"><b>충청</b></button>
-                <button class="region-button" onclick="copyRegion('지방')"><b>지방</b></button>
+        <div id="calculator" class="tab-content">
+            <h1>토리매트 계산기</h1>
+            <div class="input-group">
+                <label><b>거실</b></label>
+                <input type="number" id="거실_가로" placeholder="가로(cm)" value="0" onfocus="this.value=''">
+                <input type="number" id="거실_세로" placeholder="세로(cm)" value="0" onfocus="this.value=''">
+            </div>
+            <div class="input-group">
+                <label><b>복도</b></label>
+                <input type="number" id="복도_가로" placeholder="가로(cm)" value="0" onfocus="this.value=''">
+                <input type="number" id="복도_세로" placeholder="세로(cm)" value="0" onfocus="this.value=''">
+            </div>
+            <div class="input-group">
+                <label><b>주방</b></label>
+                <input type="number" id="주방_가로" placeholder="가로(cm)" value="0" onfocus="this.value=''">
+                <input type="number" id="주방_세로" placeholder="세로(cm)" value="0" onfocus="this.value=''">
+            </div>
+            <div class="input-group">
+                <label><b>작은 방</b></label>
+                <input type="number" id="작은방_가로" placeholder="가로(cm)" value="0" onfocus="this.value=''">
+                <input type="number" id="작은방_세로" placeholder="세로(cm)" value="0" onfocus="this.value=''">
+            </div>
+            <div class="input-group">
+                <label><b>큰 방</b></label>
+                <input type="number" id="큰방_가로" placeholder="가로(cm)" value="0" onfocus="this.value=''">
+                <input type="number" id="큰방_세로" placeholder="세로(cm)" value="0" onfocus="this.value=''">
+            </div>
+            <div class="input-group">
+                <label><b>발코니</b></label>
+                <input type="number" id="발코니_가로" placeholder="가로(cm)" value="0" onfocus="this.value=''">
+                <input type="number" id="발코니_세로" placeholder="세로(cm)" value="0" onfocus="this.value=''">
+            </div>
+            <div class="input-group">
+                <label><b>기타</b></label>
+                <input type="number" id="기타_가로" placeholder="가로(cm)" value="0" onfocus="this.value=''">
+                <input type="number" id="기타_세로" placeholder="세로(cm)" value="0" onfocus="this.value=''">
+            </div>
+            <div class="buttons">
+                <button class="calculate" onclick="calculate()">계산하기</button>
+                <button class="reset" onclick="resetValues()">초기화</button>
+            </div>
+            <div id="result"></div>
+            <div id="estimate-guide" style="display: none;">
+                <h2>예상 견적 안내</h2>
+                <div class="region-buttons">
+                    <button class="region-button" onclick="copyRegion('수도권')"><b>수도권</b></button>
+                    <button class="region-button" onclick="copyRegion('충청')"><b>충청</b></button>
+                    <button class="region-button" onclick="copyRegion('지방')"><b>지방</b></button>
+                </div>
             </div>
         </div>
-        <div class="footer">
-            <p>by_예찬</p>
-        </div>
-    </div>
-    <div class="container" id="estimate" style="display: none;">
-        <h1>견적 양식</h1>
-        <div class="quick-buttons">
-            <button class="quick-button" onclick="showQuickButtons('25평/59㎡')">25평/59㎡</button>
-            <button class="quick-button" onclick="showQuickButtons('30평/74㎡')">30평/74㎡</button>
-            <button class="quick-button" onclick="showQuickButtons('34평/84㎡')">34평/84㎡</button>
-            <button class="quick-button" onclick="showQuickButtons('30평후')">30평후</button>
-            <button class="quick-button" onclick="showQuickButtons('40평초')">40평초</button>
-            <button class="quick-button" onclick="showQuickButtons('40평중후')">40평중후</button>
-        </div>
-        <div class="input-group">
-            <label>80매트</label>
-            <input type="number" id="mat80" placeholder="숫자를 입력하세요" value="0">
-        </div>
-        <div class="input-group">
-            <label>100매트</label>
-            <input type="number" id="mat100" placeholder="숫자를 입력하세요" value="0">
-        </div>
-        <div id="quick-options" class="hidden"></div>
-        <div class="buttons">
-            <button class="calculate" onclick="calculateEstimate()">견적 계산하기</button>
-            <button class="reset" onclick="resetEstimateValues()">초기화</button>
-        </div>
-        <div id="price-result"></div>
-        <div class="region-buttons">
-            <button class="region-button" onclick="copyRegionEstimate('수도권')"><b>수도권</b></button>
-            <button class="region-button" onclick="copyRegionEstimate('충청')"><b>충청</b></button>
-            <button class="region-button" onclick="copyRegionEstimate('지방')"><b>지방</b></button>
+        <div id="estimate" class="tab-content hidden">
+            <h1>견적 양식</h1>
+            <div class="quick-buttons">
+                <button class="quick-button" onclick="showQuickButtons('25평/59㎡')">25평/59㎡</button>
+                <button class="quick-button" onclick="showQuickButtons('30평/74㎡')">30평/74㎡</button>
+                <button class="quick-button" onclick="showQuickButtons('34평/84㎡')">34평/84㎡</button>
+                <button class="quick-button" onclick="showQuickButtons('30평후')">30평후</button>
+                <button class="quick-button" onclick="showQuickButtons('40평초')">40평초</button>
+                <button class="quick-button" onclick="showQuickButtons('40평중후')">40평중후</button>
+            </div>
+            <div class="input-group">
+                <label>80매트</label>
+                <input type="number" id="mat80" placeholder="숫자를 입력하세요" value="0">
+            </div>
+            <div class="input-group">
+                <label>100매트</label>
+                <input type="number" id="mat100" placeholder="숫자를 입력하세요" value="0">
+            </div>
+            <div id="quick-options" class="hidden"></div>
+            <div class="buttons">
+                <button class="calculate" onclick="calculateEstimate()">견적 계산하기</button>
+                <button class="reset" onclick="resetEstimateValues()">초기화</button>
+            </div>
+            <div id="price-result"></div>
+            <div class="region-buttons">
+                <button class="region-button" onclick="copyRegionEstimate('수도권')"><b>수도권</b></button>
+                <button class="region-button" onclick="copyRegionEstimate('충청')"><b>충청</b></button>
+                <button class="region-button" onclick="copyRegionEstimate('지방')"><b>지방</b></button>
+            </div>
         </div>
         <div class="footer">
             <p>by_예찬</p>
@@ -274,14 +292,22 @@
     </div>
 </body>
 <script>
-    function checkPassword() {
-        const password = document.getElementById('password').value;
-        if (password === '0107') {
-            document.querySelector('.password-container').style.display = 'none';
-            document.getElementById('calculator').style.display = 'block';
-            document.getElementById('estimate').style.display = 'none';
+    function showTab(tab) {
+        const calculator = document.getElementById('calculator');
+        const estimate = document.getElementById('estimate');
+        const calcTab = document.getElementById('calc-tab');
+        const formTab = document.getElementById('form-tab');
+
+        if (tab === 'calculator') {
+            calculator.style.display = 'block';
+            estimate.style.display = 'none';
+            calcTab.classList.add('active');
+            formTab.classList.remove('active');
         } else {
-            alert('비밀번호가 올바르지 않습니다.');
+            calculator.style.display = 'none';
+            estimate.style.display = 'block';
+            calcTab.classList.remove('active');
+            formTab.classList.add('active');
         }
     }
 
