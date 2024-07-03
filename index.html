@@ -170,9 +170,9 @@
     <div class="container">
         <div class="tab-buttons">
             <button onclick="showTab('calculator')">계산기</button>
-            <button onclick="showTab('form')">양식</button>
+            <button onclick="showTab('form')" class="active-tab">양식</button>
         </div>
-        <div id="calculator" class="tab-content active">
+        <div id="calculator" class="tab-content">
             <h1>토리매트 계산기</h1>
             <div class="input-group">
                 <label><b>거실</b></label>
@@ -218,12 +218,12 @@
                 <h2>예상 견적 안내</h2>
                 <div class="region-buttons">
                     <button class="region-button" onclick="copyRegion('수도권')"><b>수도권</b></button>
-                                        <button class="region-button" onclick="copyRegion('충청권')"><b>충청권</b></button>
+                    <button class="region-button" onclick="copyRegion('충청권')"><b>충청권</b></button>
                     <button class="region-button" onclick="copyRegion('지방권')"><b>지방권</b></button>
                 </div>
             </div>
         </div>
-        <div id="form" class="tab-content">
+        <div id="form" class="tab-content active">
             <h1>견적 양식</h1>
             <div class="input-group">
                 <label>80매트</label>
@@ -239,6 +239,14 @@
                 <button class="region-button" onclick="calculateEstimate('지방권')">지방권</button>
             </div>
             <div id="price-result"></div>
+            <div class="macro-buttons">
+                <button class="macro-button" onclick="copyMacro('인삿말')"><b>인삿말</b></button>
+                <button class="macro-button" onclick="copyMacro('시공 사례')"><b>시공 사례</b></button>
+                <button class="macro-button" onclick="copyMacro('할인 안내')"><b>할인 안내</b></button>
+                <button class="macro-button" onclick="copyMacro('공기 순환로')"><b>공기 순환로</b></button>
+                <button class="macro-button" onclick="copyMacro('예약금 안내')"><b>예약금 안내</b></button>
+                <button class="macro-button" onclick="copyMacro('마무리 인사')"><b>마무리 인사</b></button>
+            </div>
         </div>
         <div class="footer">
             <p>by_예찬</p>
@@ -251,6 +259,10 @@
             content.classList.remove('active');
         });
         document.getElementById(tab).classList.add('active');
+        document.querySelectorAll('.tab-buttons button').forEach(button => {
+            button.classList.remove('active-tab');
+        });
+        document.querySelector(`.tab-buttons button[onclick="showTab('${tab}')"]`).classList.add('active-tab');
     }
 
     function calculate() {
@@ -330,7 +342,26 @@
     }
 
     function copyResult() {
-        let resultText = document.getElementById('result').innerText.trim();
+        let matCounts = {
+            '자이언트매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[0].split(': ')[1],
+            '자이언트플러스매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[1].split(': ')[1],
+            '빅토리매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[2].split(': ')[1],
+            '자이언트와이드매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[3].split(': ')[1]
+        };
+
+        let prices = {
+            '자이언트매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[0].split(': ')[1],
+            '자이언트플러스매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[1].split(': ')[1],
+            '빅토리매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[2].split(': ')[1],
+            '자이언트와이드매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[3].split(': ')[1]
+        };
+
+        let resultText = `
+자이언트매트: ${matCounts['자이언트매트']}장, ${prices['자이언트매트']}
+자이언트플러스매트: ${matCounts['자이언트플러스매트']}장, ${prices['자이언트플러스매트']}
+빅토리매트: ${matCounts['빅토리매트']}장, ${prices['빅토리매트']}
+자이언트와이드매트: ${matCounts['자이언트와이드매트']}장, ${prices['자이언트와이드매트']}
+        `.trim();
 
         const textArea = document.createElement('textarea');
         textArea.value = resultText;
@@ -453,6 +484,84 @@
         `;
 
         document.getElementById('price-result').innerHTML = resultHtml;
+    }
+
+    function copyMacro(macro) {
+        let macroText = {
+            '인삿말': `
+✅ 안녕하세요💕
+안전해서 더욱 안심이 되는 매트!!
+💓토리매트💓 입니다
+
+1200/1000/800 초대형매트의 시공으로
+우리집을 더욱 넓고 풍요롭게💚
+
+적어진 이음새로 관리까지 편안하고
+🌟누구도 따라올 수 없는🌟
+탄탄하고 쫀쫀한 고밀도 고품질 매트라지요❗💓
+품질1⃣위, 시공1⃣위, 고객만족1⃣위🌟
+
+☝예상견적을 안내해 드릴게요
+            `.trim(),
+            '시공 사례': `
+시공 사례를 보실 수 있도록 링크 남겨 드릴게요👇
+
+💥블로그 시공 사례
+https://blog.naver.com/torimat
+💥유튜브 채널
+www.youtube.com/@torimatlove
+💥인스타
+https://www.instagram.com/torimat_official?igsh=YXRicGxsMjFhMG1l
+💥공식 홈페이지
+www.torimat.com
+💥카카오톡 바로 상담
+http://pf.kakao.com/_xnAFEG
+
+☎ 1544-0074
+☎ 010-8200-8942
+            `.trim(),
+            '할인 안내': `
+💗지인 할인 5만원 가능합니다! (50장 이하 3만원)
+💗현금영수증 (x) 5만원 할인 가능합니다! (50장 이하 3만원)
+💗후기 2건 작성 3만원 할인 가능합니다!
+            `.trim(),
+            '공기 순환로': `
+공기 순환로가 있으면 공기가 통과되는 과정에서 마루 바닥면에 공기 순환로 모양대로 변색이 옵니다.
+ 
+그러한 이슈를 해결하기 위해 밑면에 공기 순환로를 우레탄으로 채우고, 항균 및 곰팡이 방지 처리를 해놓았습니다.
+
+바닥에 시공되는 매트이기 때문에 "0.01프로 조차 바닥에 손상이 없다" 라고 말씀 드릴순 없지만, 위 말씀드린 처리 후 
+압박 및 밀폐 전문 시공방식을 채택하기에 바닥 손상도가 최소화된 최신의 매트라고 말씀드릴 수 있습니다.
+
+품질력, 시공실력이 뛰어난 토리매트를 경험해보세요💞
+            `.trim(),
+            '예약금 안내': `
+356 1570 5481 03 농협 구선숙 입니다:)
+예약금 10만원 발생됩니다
+시공 5일 전 취소 및 환불 가능합니다^^
+
+입금 후 꼭 문자 주세요♡
+            `.trim(),
+            '마무리 인사': `
+우리 가족의 생활 공간, 꼼꼼하게 비교해 보시고 선택하셔야겠지요~
+
+안전해서 더욱 안심이 되는 토리매트 입니다👍
+
+궁금하신 사항은 언제든 편하신 시간에 말씀해 주세요.
+정성껏 답변 드리도록 하겠습니다😄
+
+무료 샘플 발송 서비스를 진행하고 있습니다. 
+필요하실 경우 말씀해 주시면 발송해드리겠습니다~!💞
+            `.trim()
+        };
+
+        const textArea = document.createElement('textarea');
+        textArea.value = macroText[macro];
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        alert('클립보드에 복사되었습니다.');
     }
 </script>
 </html>
