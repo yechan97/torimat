@@ -214,14 +214,6 @@
                 <button class="reset" onclick="resetValues()">초기화</button>
             </div>
             <div id="result"></div>
-            <div id="estimate-guide" style="display: none;">
-                <h2>예상 견적 안내</h2>
-                <div class="region-buttons">
-                    <button class="region-button" onclick="copyRegion('수도권')"><b>수도권</b></button>
-                    <button class="region-button" onclick="copyRegion('충청권')"><b>충청권</b></button>
-                    <button class="region-button" onclick="copyRegion('지방권')"><b>지방권</b></button>
-                </div>
-            </div>
         </div>
         <div id="form" class="tab-content active">
             <h1>견적 양식</h1>
@@ -233,13 +225,12 @@
                 <label>100매트</label>
                 <input type="number" id="mat100" placeholder="숫자를 입력하세요" value="0">
             </div>
-            <div class="region-buttons">
-                <button class="region-button" onclick="calculateEstimate('수도권')">수도권</button>
-                <button class="region-button" onclick="calculateEstimate('충청권')">충청권</button>
-                <button class="region-button" onclick="calculateEstimate('지방권')">지방권</button>
+            <div class="buttons">
+                <button class="calculate" onclick="calculateEstimate()">견적 계산하기</button>
             </div>
             <div id="price-result"></div>
             <div class="macro-buttons">
+                <h2>카카오톡/네이버톡톡/문자</h2>
                 <button class="macro-button" onclick="copyMacro('인삿말')"><b>인삿말</b></button>
                 <button class="macro-button" onclick="copyMacro('시공 사례')"><b>시공 사례</b></button>
                 <button class="macro-button" onclick="copyMacro('할인 안내')"><b>할인 안내</b></button>
@@ -299,38 +290,21 @@
         };
 
         let resultHtml = `
-            <table>
-                <tr>
-                    <th>필요한 매트 수</th>
-                    <th>가격</th>
-                </tr>
-                <tr>
-                    <td>
-                        80x80: ${matCounts['80x80']}장<br>
-                        100x100: ${matCounts['100x100']}장<br>
-                        120x80: ${matCounts['120x80']}장
-                    </td>
-                    <td>
-                        자이언트매트: ${prices['자이언트매트'].toLocaleString()}원<br>
-                        자이언트플러스매트: ${prices['자이언트플러스매트'].toLocaleString()}원<br>
-                        빅토리매트: ${prices['빅토리매트'].toLocaleString()}원<br>
-                        자이언트와이드매트: ${prices['자이언트와이드매트'].toLocaleString()}원
-                    </td>
-                </tr>
-            </table>
-            <button class="copy-button" onclick="copyResult()">결과 복사하기</button>
-            <div id="estimate-guide">
-                <h2>예상 견적 안내</h2>
-                <div class="region-buttons">
-                    <button class="region-button" onclick="copyRegion('수도권')"><b>수도권</b></button>
-                    <button class="region-button" onclick="copyRegion('충청권')"><b>충청권</b></button>
-                    <button class="region-button" onclick="copyRegion('지방권')"><b>지방권</b></button>
-                </div>
+            <div>
+                <strong>필요한 매트 수</strong>
+                <p>80x80: ${matCounts['80x80']}장</p>
+                <p>100x100: ${matCounts['100x100']}장</p>
+                <p>120x80: ${matCounts['120x80']}장</p>
+                <strong>가격</strong>
+                <p>자이언트매트: ${prices['자이언트매트'].toLocaleString()}원</p>
+                <p>자이언트플러스매트: ${prices['자이언트플러스매트'].toLocaleString()}원</p>
+                <p>빅토리매트: ${prices['빅토리매트'].toLocaleString()}원</p>
+                <p>자이언트와이드매트: ${prices['자이언트와이드매트'].toLocaleString()}원</p>
             </div>
+            <button class="copy-button" onclick="copyResult()">결과 복사하기</button>
         `;
 
         document.getElementById('result').innerHTML = resultHtml;
-        document.getElementById('estimate-guide').style.display = 'block';
     }
 
     function resetValues() {
@@ -338,29 +312,27 @@
             input.value = 0;
         });
         document.getElementById('result').innerHTML = "";
-        document.getElementById('estimate-guide').style.display = 'none';
     }
 
     function copyResult() {
         let matCounts = {
-            '자이언트매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[0].split(': ')[1],
-            '자이언트플러스매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[1].split(': ')[1],
-            '빅토리매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[2].split(': ')[1],
-            '자이언트와이드매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[3].split(': ')[1]
+            '80x80': document.querySelector('#result p:nth-child(2)').innerText.split(': ')[1],
+            '100x100': document.querySelector('#result p:nth-child(3)').innerText.split(': ')[1],
+            '120x80': document.querySelector('#result p:nth-child(4)').innerText.split(': ')[1]
         };
 
         let prices = {
-            '자이언트매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[0].split(': ')[1],
-            '자이언트플러스매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[1].split(': ')[1],
-            '빅토리매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[2].split(': ')[1],
-            '자이언트와이드매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[3].split(': ')[1]
+            '자이언트매트': document.querySelector('#result p:nth-child(6)').innerText.split(': ')[1],
+            '자이언트플러스매트': document.querySelector('#result p:nth-child(7)').innerText.split(': ')[1],
+            '빅토리매트': document.querySelector('#result p:nth-child(8)').innerText.split(': ')[1],
+            '자이언트와이드매트': document.querySelector('#result p:nth-child(9)').innerText.split(': ')[1]
         };
 
         let resultText = `
-자이언트매트: ${matCounts['자이언트매트']}장, ${prices['자이언트매트']}
-자이언트플러스매트: ${matCounts['자이언트플러스매트']}장, ${prices['자이언트플러스매트']}
-빅토리매트: ${matCounts['빅토리매트']}장, ${prices['빅토리매트']}
-자이언트와이드매트: ${matCounts['자이언트와이드매트']}장, ${prices['자이언트와이드매트']}
+80x80: ${matCounts['80x80']}장, 자이언트매트: ${prices['자이언트매트']}
+80x80: ${matCounts['80x80']}장, 자이언트플러스매트: ${prices['자이언트플러스매트']}
+100x100: ${matCounts['100x100']}장, 빅토리매트: ${prices['빅토리매트']}
+120x80: ${matCounts['120x80']}장, 자이언트와이드매트: ${prices['자이언트와이드매트']}
         `.trim();
 
         const textArea = document.createElement('textarea');
@@ -372,80 +344,7 @@
         alert('결과가 클립보드에 복사되었습니다.');
     }
 
-    function copyRegion(region) {
-        let matCounts = {
-            '자이언트매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[0].split(': ')[1],
-            '빅토리매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[1].split(': ')[1],
-            '자이언트와이드매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[2].split(': ')[1]
-        };
-
-        let prices = {
-            '자이언트매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[0].split(': ')[1],
-            '자이언트플러스매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[1].split(': ')[1],
-            '빅토리매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[2].split(': ')[1],
-            '자이언트와이드매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[3].split(': ')[1]
-        };
-
-        let regionText = {
-            '수도권': `
-🎉 예상 견적은 다음과 같습니다
-
-💚자이언트매트💚_80x80(44,000원)
-💚자이언트플러스매트💚_80x80+논슬립기능(47,000원)
-약 ${matCounts['자이언트매트']} 예상됩니다.
-
-💚자이언트와이드매트💚_120x80매트 논슬립기능(75,000원)
-💚빅토리매트💚_1미터x1미터+ 논슬립기능(79,000원 신제품 출시 한정가)
-약 ${matCounts['빅토리매트']} 예상됩니다.
-
-✅ 실제 시공 후 사용된 매트만큼만 결제해 주시면 됩니다.
-✅ 견적과 실제 시공 장수에 오차가 있을 수 있습니다.
-✅ 본사 직접 시공 & 전문가 시공 방침을 준수합니다.
-✅ 80매트 기준 50장 미만 시공비가 10만원 발생됩니다.
-✅ 100/120매트 기준 40장 미만 시공비가 10만원 발생됩니다.
-            `.trim(),
-            '충청권': `
-🎉 예상 견적은 다음과 같습니다
-
-💚자이언트매트💚_80x80(44,000원)
-💚자이언트플러스매트💚_80x80+논슬립기능(47,000원)
-약 ${matCounts['자이언트매트']} 예상됩니다.
-
-💚자이언트와이드매트💚_120x80매트 논슬립기능(75,000원)
-💚빅토리매트💚_1미터x1미터+ 논슬립기능(79,000원 신제품 출시 한정가)
-약 ${matCounts['빅토리매트']} 예상됩니다.
-
-✅ 실제 시공 후 사용된 매트만큼만 결제해 주시면 됩니다.
-✅ 견적과 실제 시공 장수에 오차가 있을 수 있습니다.
-✅ 본사 직접 시공 & 전문가 시공 방침에 따라 시공비가 10만 원 부과됩니다.
-            `.trim(),
-            '지방권': `
-🎉 예상 견적은 다음과 같습니다
-
-💚자이언트매트💚_80x80(44,000원)
-💚자이언트플러스매트💚_80x80+논슬립기능(47,000원)
-약 ${matCounts['자이언트매트']} 예상됩니다.
-
-💚자이언트와이드매트💚_120x80매트 논슬립기능(75,000원)
-💚빅토리매트💚_1미터x1미터+ 논슬립기능(79,000원 신제품 출시 한정가)
-약 ${matCounts['빅토리매트']} 예상됩니다.
-
-✅ 실제 시공 후 사용된 매트만큼만 결제해 주시면 됩니다.
-✅ 견적과 실제 시공 장수에 오차가 있을 수 있습니다.
-✅ 본사 직접 시공 & 전문가 시공 방침에 따라 시공비, 출장비 각 10만 원 부과됩니다.
-            `.trim()
-        };
-
-        const textArea = document.createElement('textarea');
-        textArea.value = regionText[region];
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textArea);
-        alert('결과가 클립보드에 복사되었습니다.');
-    }
-
-    function calculateEstimate(region) {
+    function calculateEstimate() {
         const mat80 = parseInt(document.getElementById('mat80').value) || 0;
         const mat100 = parseInt(document.getElementById('mat100').value) || 0;
 
@@ -459,28 +358,11 @@
             '빅토리매트': mat100 * 79000
         };
 
-        let total80 = price80['자이언트매트'] + price80['자이언트플러스매트'];
-        let total100 = price100['자이언트와이드매트'] + price100['빅토리매트'];
-
-        let additionalCost = 0;
-        if (region === '수도권') {
-            if (mat80 < 50) additionalCost += 100000;
-            if (mat100 < 40) additionalCost += 100000;
-        } else if (region === '충청권') {
-            additionalCost += 100000;
-        } else if (region === '지방권') {
-            additionalCost += 200000;
-        }
-
-        const totalPrice = total80 + total100 + additionalCost;
-
         const resultHtml = `
-            <h2>총 가격: ${totalPrice.toLocaleString()}원</h2>
             <p>자이언트매트: ${price80['자이언트매트'].toLocaleString()}원</p>
             <p>자이언트플러스매트: ${price80['자이언트플러스매트'].toLocaleString()}원</p>
             <p>자이언트와이드매트: ${price100['자이언트와이드매트'].toLocaleString()}원</p>
             <p>빅토리매트: ${price100['빅토리매트'].toLocaleString()}원</p>
-            <p>추가 비용: ${additionalCost.toLocaleString()}원</p>
         `;
 
         document.getElementById('price-result').innerHTML = resultHtml;
