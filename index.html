@@ -489,6 +489,13 @@
         `;
             document.getElementById('price-result').innerHTML = resultHtml;
             document.getElementById('estimate-guide').style.display = 'block';
+document.querySelectorAll('.region-buttons button').forEach(button => {
+    button.addEventListener('click', (event) => {
+        const region = event.target.textContent.trim();
+        copyRegion1(region);
+    });
+});
+
         }
 
         function resetEstimateValues() {
