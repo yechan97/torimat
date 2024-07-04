@@ -674,16 +674,6 @@
         `;
 
             document.getElementById('result').innerHTML = resultHtml;
-            document.querySelectorAll('.region-buttons button').forEach(button => {
-    button.addEventListener('click', (event) => {
-        const region = event.target.textContent.trim();
-        if (region === '수도권1') copyRegion1('수도권1');
-        if (region === '충청1') copyRegion1('충청1');
-        if (region === '지방1') copyRegion1('지방1');
-    });
-});
-
-            document.getElementById('estimate-guide').style.display = 'block';
         }
 
         function resetValues() {
@@ -698,14 +688,14 @@
             let matCounts = {
                 '자이언트매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[0].split(': ')[1],
                 '빅토리매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[1].split(': ')[1],
-                '자이언트와이드매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[2].split(': ')[1]
+                '자이언트와이드매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split(': ')[1].split(': ')[1]
             };
 
             let prices = {
                 '자이언트매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[0].split(': ')[1],
                 '자이언트플러스매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[1].split(': ')[1],
-                '빅토리매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[2].split(': ')[1],
-                '자이언트와이드매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[3].split(': ')[1]
+                '빅토리매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split(': ')[1].split(': ')[1],
+                '자이언트와이드매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[1].split(': ')[1]
             };
 
             let resultText = `
@@ -725,15 +715,15 @@
         }
 
         function copyRegion1(region) {
-    const matCounts = {
-        '자이언트매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[0].split(': ')[1],
-        '자이언트플러스매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[1].split(': ')[1],
-        '빅토리매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[2].split(': ')[1],
-        '자이언트와이드매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[3].split(': ')[1]
-    };
+            const matCounts = {
+                '자이언트매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[0].split(': ')[1],
+                '자이언트플러스매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[1].split(': ')[1],
+                '빅토리매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[2].split(': ')[1],
+                '자이언트와이드매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[3].split(': ')[1]
+            };
 
-    const regionText = {
-        '수도권1': `
+            const regionText = {
+                '수도권1': `
 🎉 예상 견적은 다음과 같습니다
 
 💚자이언트매트💚_80x80(44,000원)
@@ -750,7 +740,7 @@
 ✅ 80매트 기준 50장 미만 시공비가 10만원 발생됩니다.
 ✅ 100/120매트 기준 40장 미만 시공비가 10만원 발생됩니다.
                 `.trim(),
-        '충청1': `
+                '충청1': `
 🎉 예상 견적은 다음과 같습니다
 
 💚자이언트매트💚_80x80(44,000원)
@@ -765,7 +755,7 @@
 ✅ 견적과 실제 시공 장수에 오차가 있을 수 있습니다.
 ✅ 본사 직접 시공 & 전문가 시공 방침에 따라 시공비가 10만 원 부과됩니다.
                 `.trim(),
-        '지방1': `
+                '지방1': `
 🎉 예상 견적은 다음과 같습니다
 
 💚자이언트매트💚_80x80(44,000원)
@@ -780,17 +770,16 @@
 ✅ 견적과 실제 시공 장수에 오차가 있을 수 있습니다.
 ✅ 본사 직접 시공 & 전문가 시공 방침에 따라 시공비, 출장비 각 10만 원 부과됩니다.
                 `.trim()
-    };
+            };
 
-    const textArea = document.createElement('textarea');
-    textArea.value = regionText[region];
-    document.body.appendChild(textArea);
-    textArea.select();
-    document.execCommand('copy');
-    document.body.removeChild(textArea);
-    alert('결과가 클립보드에 복사되었습니다.');
-}
-
+            const textArea = document.createElement('textarea');
+            textArea.value = regionText[region];
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            alert('결과가 클립보드에 복사되었습니다.');
+        }
 
         function syncMat100() {
             const mat80 = parseInt(document.getElementById('mat80').value) || 0;
