@@ -234,11 +234,6 @@
                 <button class="reset" onclick="resetEstimateValues()">초기화</button>
             </div>
             <div id="price-result"></div>
-            <div class="region-buttons hidden">
-                <button class="region-button" onclick="copyRegion('수도권')">수도권</button>
-                <button class="region-button" onclick="copyRegion('충청')">충청</button>
-                <button class="region-button" onclick="copyRegion('지방')">지방</button>
-            </div>
         </div>
         <div id="info" class="tab-content hidden">
             <h1>카카오톡/네이버톡톡/문자</h1>
@@ -258,9 +253,9 @@
     <script>
         function showTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.add('hidden');
+                tab.style.display = 'none';
             });
-            document.getElementById(tabId).classList.remove('hidden');
+            document.getElementById(tabId).style.display = 'block';
             document.querySelectorAll('.tab-buttons button').forEach(button => {
                 button.classList.remove('active');
             });
@@ -345,7 +340,7 @@
 
         function calculateEstimate() {
             const mat80 = parseInt(document.getElementById('mat80').value) || 0;
-            const mat100 = parseInt(document.getElementById('mat100').value) || 0;
+            const mat100 = Math.floor(mat80 * 2.56 / 3.8);
 
             const price80 = {
                 '자이언트매트': mat80 * 44000,
@@ -388,26 +383,26 @@
             `;
 
             document.getElementById('price-result').innerHTML = resultHtml;
-            document.querySelector('.region-buttons').classList.remove('hidden');
+            document.getElementById('estimate-guide').style.display = 'block';
         }
 
         function resetEstimateValues() {
             document.getElementById('mat80').value = 0;
             document.getElementById('mat100').value = 0;
             document.getElementById('price-result').innerHTML = "";
-            document.querySelector('.region-buttons').classList.add('hidden');
+            document.getElementById('estimate-guide').style.display = 'none';
         }
 
         function copyResult(tab) {
             const isCalculator = tab === 'calculator';
             const mat80 = isCalculator ? document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[0].split(': ')[1] : parseInt(document.getElementById('mat80').value);
-            const mat100 = isCalculator ? document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[1].split(': ')[1] : parseInt(document.getElementById('mat100').value);
+            const mat100 = isCalculator ? document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split(': ')[1].split(': ')[1] : parseInt(document.getElementById('mat100').value);
 
             const prices = isCalculator ? {
                 '자이언트매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[0].split(': ')[1],
-                '자이언트플러스매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[1].split(': ')[1],
-                '자이언트와이드매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[2].split(': ')[1],
-                '빅토리매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[3].split(': ')[1]
+                '자이언트플러스매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split(': ')[1].split(': ')[1],
+                '자이언트와이드매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split(': ')[2].split(': ')[1],
+                '빅토리매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split(': ')[3].split(': ')[1]
             } : {
                 '자이언트매트': mat80 * 44000,
                 '자이언트플러스매트': mat80 * 47000,
