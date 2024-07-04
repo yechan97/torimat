@@ -445,52 +445,51 @@
         }
 
         function calculateEstimate() {
-    const mat80 = parseInt(document.getElementById('mat80').value) || 0;
-    const mat100 = parseInt(document.getElementById('mat100').value) || 0;
+            const mat80 = parseInt(document.getElementById('mat80').value) || 0;
+            const mat100 = parseInt(document.getElementById('mat100').value) || 0;
 
-    const price80 = {
-        '자이언트매트': mat80 * 44000,
-        '자이언트플러스매트': mat80 * 47000
-    };
+            const price80 = {
+                '자이언트매트': mat80 * 44000,
+                '자이언트플러스매트': mat80 * 47000
+            };
 
-    const price100 = {
-        '자이언트와이드매트': mat100 * 75000,
-        '빅토리매트': mat100 * 79000
-    };
+            const price100 = {
+                '자이언트와이드매트': mat100 * 75000,
+                '빅토리매트': mat100 * 79000
+            };
 
-    const resultHtml = `
-    <table>
-        <tr>
-            <th>필요한 매트 수</th>
-            <th>가격</th>
-        </tr>
-        <tr>
-            <td>
-                80x80: ${mat80}장<br>
-                100x100: ${mat100}장
-            </td>
-            <td>
-                자이언트매트: ${price80['자이언트매트'].toLocaleString()}원<br>
-                자이언트플러스매트: ${price80['자이언트플러스매트'].toLocaleString()}원<br>
-                자이언트와이드매트: ${price100['자이언트와이드매트'].toLocaleString()}원<br>
-                빅토리매트: ${price100['빅토리매트'].toLocaleString()}원
-            </td>
-        </tr>
-    </table>
-    <button class="copy-button" onclick="copyEstimateResult()">결과 복사하기</button>
-    <div id="estimate-guide">
-        <h2>예상 견적 안내</h2>
-        <div class="region-buttons">
-            <button class="region-button" onclick="copyRegionEstimate('수도권')"><b>수도권</b></button>
-            <button class="region-button" onclick="copyRegionEstimate('충청')"><b>충청</b></button>
-            <button class="region-button" onclick="copyRegionEstimate('지방')"><b>지방</b></button>
-        </div>
-    </div>
-`;
-    document.getElementById('price-result').innerHTML = resultHtml;
-    document.getElementById('estimate-guide').style.display = 'block';
-}
-
+            const resultHtml = `
+            <table>
+                <tr>
+                    <th>필요한 매트 수</th>
+                    <th>가격</th>
+                </tr>
+                <tr>
+                    <td>
+                        80x80: ${mat80}장<br>
+                        100x100: ${mat100}장
+                    </td>
+                    <td>
+                        자이언트매트: ${price80['자이언트매트'].toLocaleString()}원<br>
+                        자이언트플러스매트: ${price80['자이언트플러스매트'].toLocaleString()}원<br>
+                        자이언트와이드매트: ${price100['자이언트와이드매트'].toLocaleString()}원<br>
+                        빅토리매트: ${price100['빅토리매트'].toLocaleString()}원
+                    </td>
+                </tr>
+            </table>
+            <button class="copy-button" onclick="copyEstimateResult()">결과 복사하기</button>
+            <div id="estimate-guide">
+                <h2>예상 견적 안내</h2>
+                <div class="region-buttons">
+                    <button class="region-button" onclick="copyRegionEstimate('수도권')"><b>수도권</b></button>
+                    <button class="region-button" onclick="copyRegionEstimate('충청')"><b>충청</b></button>
+                    <button class="region-button" onclick="copyRegionEstimate('지방')"><b>지방</b></button>
+                </div>
+            </div>
+        `;
+            document.getElementById('price-result').innerHTML = resultHtml;
+            document.getElementById('estimate-guide').style.display = 'block';
+        }
 
         function resetEstimateValues() {
             document.getElementById('mat80').value = 0;
@@ -500,25 +499,24 @@
         }
 
         function copyEstimateResult() {
-    const mat80 = parseInt(document.getElementById('mat80').value) || 0;
-    const mat100 = parseInt(document.getElementById('mat100').value) || 0;
+            const mat80 = parseInt(document.getElementById('mat80').value) || 0;
+            const mat100 = parseInt(document.getElementById('mat100').value) || 0;
 
-    const resultText = `
+            const resultText = `
 자이언트매트: ${mat80}장, ${(mat80 * 44000).toLocaleString()}원
 자이언트플러스매트: ${mat80}장, ${(mat80 * 47000).toLocaleString()}원
 빅토리매트: ${mat100}장, ${(mat100 * 79000).toLocaleString()}원
 자이언트와이드매트: ${mat100}장, ${(mat100 * 75000).toLocaleString()}원
-    `.trim();
+            `.trim();
 
-    const textArea = document.createElement('textarea');
-    textArea.value = resultText;
-    document.body.appendChild(textArea);
-    textArea.select();
-    document.execCommand('copy');
-    document.body.removeChild(textArea);
-    alert('결과가 클립보드에 복사되었습니다.');
-}
-
+            const textArea = document.createElement('textarea');
+            textArea.value = resultText;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            alert('결과가 클립보드에 복사되었습니다.');
+        }
 
         function copyRegionEstimate(region) {
             const mat80 = parseInt(document.getElementById('mat80').value) || 0;
@@ -541,7 +539,7 @@
 ✅ 본사 직접 시공 & 전문가 시공 방침을 준수합니다.
 ✅ 80매트 기준 50장 미만 시공비가 10만원 발생됩니다.
 ✅ 100/120매트 기준 40장 미만 시공비가 10만원 발생됩니다.
-            `.trim(),
+                `.trim(),
                 '충청': `
 🎉 예상 견적은 다음과 같습니다
 
@@ -556,7 +554,7 @@
 ✅ 실제 시공 후 사용된 매트만큼만 결제해 주시면 됩니다.
 ✅ 견적과 실제 시공 장수에 오차가 있을 수 있습니다.
 ✅ 본사 직접 시공 & 전문가 시공 방침에 따라 시공비가 10만 원 부과됩니다.
-            `.trim(),
+                `.trim(),
                 '지방': `
 🎉 예상 견적은 다음과 같습니다
 
@@ -571,7 +569,7 @@
 ✅ 실제 시공 후 사용된 매트만큼만 결제해 주시면 됩니다.
 ✅ 견적과 실제 시공 장수에 오차가 있을 수 있습니다.
 ✅ 본사 직접 시공 & 전문가 시공 방침에 따라 시공비, 출장비 각 10만 원 부과됩니다.
-            `.trim()
+                `.trim()
             };
 
             const textArea = document.createElement('textarea');
@@ -711,7 +709,7 @@
 자이언트플러스매트: ${matCounts['자이언트매트']}, ${prices['자이언트플러스매트']}
 빅토리매트: ${matCounts['빅토리매트']}, ${prices['빅토리매트']}
 자이언트와이드매트: ${matCounts['자이언트와이드매트']}, ${prices['자이언트와이드매트']}
-        `.trim();
+            `.trim();
 
             const textArea = document.createElement('textarea');
             textArea.value = resultText;
@@ -747,7 +745,7 @@
 ✅ 본사 직접 시공 & 전문가 시공 방침을 준수합니다.
 ✅ 80매트 기준 50장 미만 시공비가 10만원 발생됩니다.
 ✅ 100/120매트 기준 40장 미만 시공비가 10만원 발생됩니다.
-            `.trim(),
+                `.trim(),
                 '충청': `
 🎉 예상 견적은 다음과 같습니다
 
@@ -762,7 +760,7 @@
 ✅ 실제 시공 후 사용된 매트만큼만 결제해 주시면 됩니다.
 ✅ 견적과 실제 시공 장수에 오차가 있을 수 있습니다.
 ✅ 본사 직접 시공 & 전문가 시공 방침에 따라 시공비가 10만 원 부과됩니다.
-            `.trim(),
+                `.trim(),
                 '지방': `
 🎉 예상 견적은 다음과 같습니다
 
@@ -777,7 +775,7 @@
 ✅ 실제 시공 후 사용된 매트만큼만 결제해 주시면 됩니다.
 ✅ 견적과 실제 시공 장수에 오차가 있을 수 있습니다.
 ✅ 본사 직접 시공 & 전문가 시공 방침에 따라 시공비, 출장비 각 10만 원 부과됩니다.
-            `.trim()
+                `.trim()
             };
 
             const textArea = document.createElement('textarea');
