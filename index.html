@@ -346,9 +346,9 @@
             <div id="estimate-guide" style="display: none;">
                 <h2>예상 견적 안내</h2>
                 <div class="region-buttons">
-                    <button class="region-button" onclick="copyRegionEstimate('수도권')"><b>수도권</b></button>
-                    <button class="region-button" onclick="copyRegionEstimate('충청')"><b>충청</b></button>
-                    <button class="region-button" onclick="copyRegionEstimate('지방')"><b>지방</b></button>
+                    <button class="region-button" onclick="copyRegionEstimate2('수도권2')"><b>수도권</b></button>
+                    <button class="region-button" onclick="copyRegionEstimate2('충청2')"><b>충청</b></button>
+                    <button class="region-button" onclick="copyRegionEstimate2('지방2')"><b>지방</b></button>
                 </div>
             </div>
         </div>
@@ -481,9 +481,9 @@
             <div id="estimate-guide">
                 <h2>예상 견적 안내</h2>
                 <div class="region-buttons">
-                    <button class="region-button" onclick="copyRegionEstimate('수도권')"><b>수도권</b></button>
-                    <button class="region-button" onclick="copyRegionEstimate('충청')"><b>충청</b></button>
-                    <button class="region-button" onclick="copyRegionEstimate('지방')"><b>지방</b></button>
+                    <button class="region-button" onclick="copyRegionEstimate2('수도권2')"><b>수도권</b></button>
+                    <button class="region-button" onclick="copyRegionEstimate2('충청2')"><b>충청</b></button>
+                    <button class="region-button" onclick="copyRegionEstimate2('지방2')"><b>지방</b></button>
                 </div>
             </div>
         `;
@@ -518,12 +518,12 @@
             alert('결과가 클립보드에 복사되었습니다.');
         }
 
-        function copyRegionEstimate(region) {
+        function copyRegionEstimate2(region) {
             const mat80 = parseInt(document.getElementById('mat80').value) || 0;
             const mat100 = parseInt(document.getElementById('mat100').value) || 0;
 
             const regionText = {
-                '수도권': `
+                '수도권2': `
 🎉 예상 견적은 다음과 같습니다
 
 💚자이언트매트💚_80x80(44,000원)
@@ -540,7 +540,7 @@
 ✅ 80매트 기준 50장 미만 시공비가 10만원 발생됩니다.
 ✅ 100/120매트 기준 40장 미만 시공비가 10만원 발생됩니다.
                 `.trim(),
-                '충청': `
+                '충청2': `
 🎉 예상 견적은 다음과 같습니다
 
 💚자이언트매트💚_80x80(44,000원)
@@ -555,7 +555,7 @@
 ✅ 견적과 실제 시공 장수에 오차가 있을 수 있습니다.
 ✅ 본사 직접 시공 & 전문가 시공 방침에 따라 시공비가 10만 원 부과됩니다.
                 `.trim(),
-                '지방': `
+                '지방2': `
 🎉 예상 견적은 다음과 같습니다
 
 💚자이언트매트💚_80x80(44,000원)
@@ -666,9 +666,9 @@
             <div id="estimate-guide">
                 <h2>예상 견적 안내</h2>
                 <div class="region-buttons">
-                    <button class="region-button" onclick="copyRegion('수도권')"><b>수도권</b></button>
-                    <button class="region-button" onclick="copyRegion('충청')"><b>충청</b></button>
-                    <button class="region-button" onclick="copyRegion('지방')"><b>지방</b></button>
+                    <button class="region-button" onclick="copyRegion1('수도권1')"><b>수도권</b></button>
+                    <button class="region-button" onclick="copyRegion1('충청1')"><b>충청</b></button>
+                    <button class="region-button" onclick="copyRegion1('지방1')"><b>지방</b></button>
                 </div>
             </div>
         `;
@@ -720,7 +720,7 @@
             alert('결과가 클립보드에 복사되었습니다.');
         }
 
-        function copyRegion(region) {
+        function copyRegion1(region) {
             const matCounts = {
                 '자이언트매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[0].split(': ')[1],
                 '자이언트플러스매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[1].split(': ')[1],
@@ -729,7 +729,7 @@
             };
 
             const regionText = {
-                '수도권': `
+                '수도권1': `
 🎉 예상 견적은 다음과 같습니다
 
 💚자이언트매트💚_80x80(44,000원)
@@ -746,7 +746,7 @@
 ✅ 80매트 기준 50장 미만 시공비가 10만원 발생됩니다.
 ✅ 100/120매트 기준 40장 미만 시공비가 10만원 발생됩니다.
                 `.trim(),
-                '충청': `
+                '충청1': `
 🎉 예상 견적은 다음과 같습니다
 
 💚자이언트매트💚_80x80(44,000원)
@@ -761,7 +761,7 @@
 ✅ 견적과 실제 시공 장수에 오차가 있을 수 있습니다.
 ✅ 본사 직접 시공 & 전문가 시공 방침에 따라 시공비가 10만 원 부과됩니다.
                 `.trim(),
-                '지방': `
+                '지방1': `
 🎉 예상 견적은 다음과 같습니다
 
 💚자이언트매트💚_80x80(44,000원)
@@ -890,11 +890,6 @@ http://pf.kakao.com/_xnAFEG
 
         document.addEventListener('DOMContentLoaded', function () {
             showTab('estimate');
-            document.querySelectorAll('.region-button').forEach(button => {
-                button.addEventListener('click', () => {
-                    copyRegionEstimate(button.innerText);
-                });
-            });
         });
     </script>
 </body>
