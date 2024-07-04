@@ -674,15 +674,6 @@
         `;
 
             document.getElementById('result').innerHTML = resultHtml;
-            document.querySelectorAll('.region-buttons button').forEach(button => {
-    button.addEventListener('click', (event) => {
-        const region = event.target.textContent.trim();
-        if (region === '수도권1') copyRegion1('수도권1');
-        if (region === '충청1') copyRegion1('충청1');
-        if (region === '지방1') copyRegion1('지방1');
-    });
-});
-
             document.getElementById('estimate-guide').style.display = 'block';
         }
 
