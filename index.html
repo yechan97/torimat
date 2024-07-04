@@ -318,14 +318,6 @@
                 <button class="reset" onclick="resetValues()">초기화</button>
             </div>
             <div id="result"></div>
-            <div id="estimate-guide1" style="display: none;">
-                <h2>예상 견적 안내</h2>
-                <div class="region-buttons">
-                    <button class="region-button" onclick="copyRegion1('수도권1')"><b>수도권1</b></button>
-                    <button class="region-button" onclick="copyRegion1('충청1')"><b>충청1</b></button>
-                    <button class="region-button" onclick="copyRegion1('지방1')"><b>지방1</b></button>
-                </div>
-            </div>
         </div>
         <div id="estimate" class="tab-content hidden">
             <h1>견적 양식</h1>
@@ -351,7 +343,7 @@
                 <button class="reset" onclick="resetEstimateValues()">초기화</button>
             </div>
             <div id="price-result"></div>
-            <div id="estimate-guide2" style="display: none;">
+            <div id="estimate-guide" style="display: none;">
                 <h2>예상 견적 안내</h2>
                 <div class="region-buttons">
                     <button class="region-button" onclick="copyRegionEstimate2('수도권2')"><b>수도권2</b></button>
@@ -486,7 +478,7 @@
                 </tr>
             </table>
             <button class="copy-button" onclick="copyEstimateResult()">결과 복사하기</button>
-            <div id="estimate-guide2">
+            <div id="estimate-guide">
                 <h2>예상 견적 안내</h2>
                 <div class="region-buttons">
                     <button class="region-button" onclick="copyRegionEstimate2('수도권2')"><b>수도권2</b></button>
@@ -496,14 +488,14 @@
             </div>
         `;
             document.getElementById('price-result').innerHTML = resultHtml;
-            document.getElementById('estimate-guide2').style.display = 'block';
+            document.getElementById('estimate-guide').style.display = 'block';
         }
 
         function resetEstimateValues() {
             document.getElementById('mat80').value = 0;
             document.getElementById('mat100').value = 0;
             document.getElementById('price-result').innerHTML = "";
-            document.getElementById('estimate-guide2').style.display = 'none';
+            document.getElementById('estimate-guide').style.display = 'none';
         }
 
         function copyEstimateResult() {
@@ -671,7 +663,7 @@
                 </tr>
             </table>
             <button class="copy-button" onclick="copyResult()">결과 복사하기</button>
-            <div id="estimate-guide1">
+            <div id="estimate-guide">
                 <h2>예상 견적 안내</h2>
                 <div class="region-buttons">
                     <button class="region-button" onclick="copyRegion1('수도권1')"><b>수도권1</b></button>
@@ -682,7 +674,7 @@
         `;
 
             document.getElementById('result').innerHTML = resultHtml;
-            document.getElementById('estimate-guide1').style.display = 'block';
+            document.getElementById('estimate-guide').style.display = 'block';
         }
 
         function resetValues() {
@@ -690,7 +682,7 @@
                 input.value = 0;
             });
             document.getElementById('result').innerHTML = "";
-            document.getElementById('estimate-guide1').style.display = 'none';
+            document.getElementById('estimate-guide').style.display = 'none';
         }
 
         function copyResult() {
@@ -703,7 +695,7 @@
             let prices = {
                 '자이언트매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[0].split(': ')[1],
                 '자이언트플러스매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[1].split(': ')[1],
-                '빅토리매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split(': ')[1].split(': ')[1],
+                '빅토리매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[2].split(': ')[1],
                 '자이언트와이드매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[3].split(': ')[1]
             };
 
