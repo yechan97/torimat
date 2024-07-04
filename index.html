@@ -30,8 +30,50 @@
         h1 {
             color: #7CB342; /* 초록색 */
             font-weight: bold;
-            font-family: 'Gowun Dodum', sans-serif;
             margin-bottom: 20px;
+        }
+        .tab-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .tab-buttons button {
+            width: 32%;
+            padding: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            background-color: #81C784; /* Green */
+            font-family: 'Gowun Dodum', sans-serif;
+        }
+        .tab-buttons button.active {
+            background-color: #64B5F6; /* Blue */
+        }
+        .hidden {
+            display: none;
+        }
+        .quick-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .quick-button {
+            flex: 1 1 calc(33.333% - 10px);
+            margin: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #64B5F6; /* Blue */
+            color: #fff;
+            font-family: 'Gowun Dodum', sans-serif;
+        }
+        .quick-button.active {
+            background-color: #FFCC80; /* Light Orange */
         }
         .input-group {
             display: flex;
@@ -110,7 +152,6 @@
             border: none;
             border-radius: 5px;
             font-weight: bold;
-            font-family: 'Gowun Dodum', sans-serif;
         }
         .region-buttons, .macro-buttons {
             margin-top: 20px;
@@ -137,82 +178,28 @@
             border-color: #81C784;
             outline: none;
         }
-        .password-container {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .password-input {
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #D3D3D3;
-            border-radius: 5px;
-            width: 80%;
-            margin-bottom: 10px;
-        }
-        .password-button {
-            padding: 10px 15px;
-            font-size: 16px;
-            cursor: pointer;
-            background-color: #81C784; /* Green */
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            font-weight: bold;
-            font-family: 'Gowun Dodum', sans-serif;
-        }
-        .tabs {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-        .tab-button {
-            flex: 1;
-            padding: 10px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            background-color: #81C784;
-            color: #fff;
-            font-size: 16px;
-            font-weight: bold;
-            margin: 0 5px;
-            font-family: 'Gowun Dodum', sans-serif;
-        }
-        .tab-button.active {
-            background-color: #4CAF50;
-        }
-        .quick-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-        .quick-button {
-            margin: 5px;
-            padding: 10px 15px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            display: inline-block;
-            background-color: #64B5F6; /* Blue */
-            color: #fff;
-            font-family: 'Gowun Dodum', sans-serif;
-        }
-        .quick-button.active {
-            background-color: #4CAF50; /* Active color */
-        }
-        .hidden {
+        .quick-buttons-container {
             display: none;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+        @media screen and (max-width: 600px) {
+            .quick-button {
+                flex: 1 1 100%;
+            }
+            .tab-buttons button {
+                font-size: 16px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="tabs">
-            <button class="tab-button" id="calc-tab" onclick="showTab('calculator')">계산기</button>
-            <button class="tab-button" id="form-tab" onclick="showTab('estimate')">양식</button>
+        <div class="tab-buttons">
+            <button id="calc-tab" class="active" onclick="showTab('calculator')">계산기</button>
+            <button id="form-tab" onclick="showTab('estimate')">양식</button>
+            <button id="info-tab" onclick="showTab('info')">안내</button>
         </div>
         <div id="calculator" class="tab-content">
             <h1>토리매트 계산기</h1>
@@ -275,24 +262,30 @@
                 <button class="quick-button" onclick="toggleQuickButtons('40평초')">40평초</button>
                 <button class="quick-button" onclick="toggleQuickButtons('40평중후')">40평중후</button>
             </div>
-            <div id="quick-options" class="quick-buttons hidden"></div>
+            <div class="quick-buttons-container" id="quick-buttons-container"></div>
             <div class="input-group">
                 <label><b>80매트</b></label>
-                <input type="number" id="mat80" placeholder="수량 입력" value="0" onfocus="this.value=''">
+                <input type="number" id="mat80" placeholder="0" value="0" onfocus="this.value=''" oninput="updateMat100()">
             </div>
             <div class="input-group">
                 <label><b>100매트</b></label>
-                <input type="number" id="mat100" placeholder="수량 입력" value="0" onfocus="this.value=''">
+                <input type="number" id="mat100" placeholder="0" value="0" onfocus="this.value=''">
             </div>
             <div class="buttons">
                 <button class="calculate" onclick="calculateEstimate()">견적 계산하기</button>
                 <button class="reset" onclick="resetEstimateValues()">초기화</button>
             </div>
             <div id="price-result"></div>
-            <div class="region-buttons">
-                <button class="region-button" onclick="copyRegionEstimate('수도권')"><b>수도권</b></button>
-                <button class="region-button" onclick="copyRegionEstimate('충청')"><b>충청</b></button>
-                <button class="region-button" onclick="copyRegionEstimate('지방')"><b>지방</b></button>
+        </div>
+        <div id="info" class="tab-content hidden">
+            <h1>카카오톡/네이버톡톡/문자</h1>
+            <div class="macro-buttons">
+                <button class="macro-button" onclick="copyMacro('인삿말')"><b>인삿말</b></button>
+                <button class="macro-button" onclick="copyMacro('시공 사례')"><b>시공 사례</b></button>
+                <button class="macro-button" onclick="copyMacro('할인 안내')"><b>할인 안내</b></button>
+                <button class="macro-button" onclick="copyMacro('공기 순환로')"><b>공기 순환로</b></button>
+                <button class="macro-button" onclick="copyMacro('예약금 안내')"><b>예약금 안내</b></button>
+                <button class="macro-button" onclick="copyMacro('마무리 인사')"><b>마무리 인사</b></button>
             </div>
         </div>
         <div class="footer">
@@ -300,87 +293,73 @@
         </div>
     </div>
 <script>
-    function showTab(tabName) {
-        document.getElementById('calculator').classList.add('hidden');
-        document.getElementById('estimate').classList.add('hidden');
-        document.getElementById('calc-tab').classList.remove('active');
-        document.getElementById('form-tab').classList.remove('active');
+    let activeButton = null;
 
-        if (tabName === 'calculator') {
-            document.getElementById('calculator').classList.remove('hidden');
-            document.getElementById('calc-tab').classList.add('active');
+    function showTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(tab => {
+            tab.classList.add('hidden');
+        });
+        document.querySelectorAll('.tab-buttons button').forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.remove('hidden');
+        document.getElementById(tabId + '-tab').classList.add('active');
+    }
+
+    function toggleQuickButtons(buttonId) {
+        const quickButtonsContainer = document.getElementById('quick-buttons-container');
+        const quickButtons = {
+            '25평/59㎡': [
+                { label: '거복', mat80: 40, mat100: 27 },
+                { label: '거복주', mat80: 50, mat100: 33 }
+            ],
+            '30평/74㎡': [
+                { label: '거복', mat80: 45, mat100: 31 },
+                { label: '거복주', mat80: 60, mat100: 41 }
+            ],
+            '34평/84㎡': [
+                { label: '거복', mat80: 50, mat100: 34 },
+                { label: '거복아', mat80: 60, mat100: 41 },
+                { label: '거복주', mat80: 68, mat100: 45 }
+            ],
+            '30평후': [
+                { label: '거복', mat80: 58, mat100: 40 },
+                { label: '거복주', mat80: 75, mat100: 51 }
+            ],
+            '40평초': [
+                { label: '거복', mat80: 63, mat100: 43 },
+                { label: '거복주', mat80: 80, mat100: 54 }
+            ],
+            '40평중후': [
+                { label: '거복', mat80: 68, mat100: 47 },
+                { label: '거복주', mat80: 85, mat100: 58 }
+            ]
+        };
+
+        if (activeButton === buttonId) {
+            quickButtonsContainer.innerHTML = '';
+            activeButton = null;
         } else {
-            document.getElementById('estimate').classList.remove('hidden');
-            document.getElementById('form-tab').classList.add('active');
+            quickButtonsContainer.innerHTML = quickButtons[buttonId]
+                .map(button => `<button class="quick-button" onclick="setMats(${button.mat80}, ${button.mat100})">${button.label}</button>`)
+                .join('');
+            activeButton = buttonId;
         }
+
+        document.querySelectorAll('.quick-button').forEach(button => {
+            button.classList.remove('active');
+        });
+        document.querySelector(`.quick-button[onclick*="${buttonId}"]`).classList.add('active');
     }
 
-    function toggleQuickButtons(type) {
-        const buttons = document.querySelectorAll('.quick-button');
-        buttons.forEach(button => button.classList.remove('active'));
-
-        const selectedButton = Array.from(buttons).find(button => button.innerText === type);
-        if (selectedButton) {
-            if (selectedButton.classList.contains('active')) {
-                selectedButton.classList.remove('active');
-                document.getElementById('quick-options').classList.add('hidden');
-                document.getElementById('quick-options').innerHTML = '';
-            } else {
-                selectedButton.classList.add('active');
-                showQuickButtons(type);
-            }
-        }
-    }
-
-    function showQuickButtons(type) {
-        let buttonsHtml = '';
-        switch (type) {
-            case '25평/59㎡':
-                buttonsHtml = `
-                    <button class="quick-button" onclick="setEstimateValues(40, 27)">거복</button>
-                    <button class="quick-button" onclick="setEstimateValues(50, 33)">거복주</button>
-                `;
-                break;
-            case '30평/74㎡':
-                buttonsHtml = `
-                    <button class="quick-button" onclick="setEstimateValues(45, 31)">거복</button>
-                    <button class="quick-button" onclick="setEstimateValues(60, 41)">거복주</button>
-                `;
-                break;
-            case '34평/84㎡':
-                buttonsHtml = `
-                    <button class="quick-button" onclick="setEstimateValues(50, 34)">거복</button>
-                    <button class="quick-button" onclick="setEstimateValues(60, 41)">거복아</button>
-                    <button class="quick-button" onclick="setEstimateValues(68, 45)">거복주</button>
-                `;
-                break;
-            case '30평후':
-                buttonsHtml = `
-                    <button class="quick-button" onclick="setEstimateValues(58, 40)">거복</button>
-                    <button class="quick-button" onclick="setEstimateValues(75, 51)">거복주</button>
-                `;
-                break;
-            case '40평초':
-                buttonsHtml = `
-                    <button class="quick-button" onclick="setEstimateValues(63, 43)">거복</button>
-                    <button class="quick-button" onclick="setEstimateValues(80, 54)">거복주</button>
-                `;
-                break;
-            case '40평중후':
-                buttonsHtml = `
-                    <button class="quick-button" onclick="setEstimateValues(68, 47)">거복</button>
-                    <button class="quick-button" onclick="setEstimateValues(85, 58)">거복주</button>
-                `;
-                break;
-            default:
-                buttonsHtml = '';
-        }
-        document.getElementById('quick-options').innerHTML = buttonsHtml;
-        document.getElementById('quick-options').classList.remove('hidden');
-    }
-
-    function setEstimateValues(mat80, mat100) {
+    function setMats(mat80, mat100) {
         document.getElementById('mat80').value = mat80;
+        document.getElementById('mat100').value = mat100;
+    }
+
+    function updateMat100() {
+        const mat80 = parseFloat(document.getElementById('mat80').value) || 0;
+        const mat100 = Math.floor(mat80 / 2.56);
         document.getElementById('mat100').value = mat100;
     }
 
@@ -398,11 +377,27 @@
             '빅토리매트': mat100 * 79000
         };
 
-        const resultHtml = `
-            <p>자이언트매트: ${mat80}장, ${price80['자이언트매트'].toLocaleString()}원 <button class="copy-button" onclick="copyText('자이언트매트: ${mat80}장, ${price80['자이언트매트'].toLocaleString()}원')">복사하기</button></p>
-            <p>자이언트플러스매트: ${mat80}장, ${price80['자이언트플러스매트'].toLocaleString()}원 <button class="copy-button" onclick="copyText('자이언트플러스매트: ${mat80}장, ${price80['자이언트플러스매트'].toLocaleString()}원')">복사하기</button></p>
-            <p>자이언트와이드매트: ${mat100}장, ${price100['자이언트와이드매트'].toLocaleString()}원 <button class="copy-button" onclick="copyText('자이언트와이드매트: ${mat100}장, ${price100['자이언트와이드매트'].toLocaleString()}원')">복사하기</button></p>
-            <p>빅토리매트: ${mat100}장, ${price100['빅토리매트'].toLocaleString()}원 <button class="copy-button" onclick="copyText('빅토리매트: ${mat100}장, ${price100['빅토리매트'].toLocaleString()}원')">복사하기</button></p>
+        let resultHtml = `
+            <table>
+                <tr>
+                    <th>필요한 매트 수</th>
+                    <th>가격</th>
+                </tr>
+                <tr>
+                    <td>
+                        80x80: ${mat80}장<br>
+                        100x100: ${mat100}장<br>
+                        120x80: ${mat100}장
+                    </td>
+                    <td>
+                        자이언트매트: ${price80['자이언트매트'].toLocaleString()}원<br>
+                        자이언트플러스매트: ${price80['자이언트플러스매트'].toLocaleString()}원<br>
+                        자이언트와이드매트: ${price100['자이언트와이드매트'].toLocaleString()}원<br>
+                        빅토리매트: ${price100['빅토리매트'].toLocaleString()}원
+                    </td>
+                </tr>
+            </table>
+            <button class="copy-button" onclick="copyResult()">결과 복사하기</button>
         `;
 
         document.getElementById('price-result').innerHTML = resultHtml;
@@ -421,258 +416,23 @@
         textArea.select();
         document.execCommand('copy');
         document.body.removeChild(textArea);
-        alert('결과가 클립보드에 복사되었습니다.');
+        alert('복사되었습니다.');
     }
 
-    function copyRegionEstimate(region) {
-        const mat80 = parseInt(document.getElementById('mat80').value) || 0;
-        const mat100 = parseInt(document.getElementById('mat100').value) || 0;
-
-        const matCounts = {
-            '자이언트매트': mat80,
-            '빅토리매트': mat100
+    function copyMacro(macro) {
+        const macroText = {
+            '인삿말': '...인삿말 내용...',
+            '시공 사례': '...시공 사례 내용...',
+            '할인 안내': '...할인 안내 내용...',
+            '공기 순환로': '...공기 순환로 내용...',
+            '예약금 안내': '...예약금 안내 내용...',
+            '마무리 인사': '...마무리 인사 내용...'
         };
-
-        let regionText = {
-            '수도권': `
-🎉 예상 견적은 다음과 같습니다
-
-💚자이언트매트💚_80x80(44,000원)
-💚자이언트플러스매트💚_80x80+논슬립기능(47,000원)
-약 ${matCounts['자이언트매트']}장 예상됩니다.
-
-💚자이언트와이드매트💚_120x80매트 논슬립기능(75,000원)
-💚빅토리매트💚_1미터x1미터+ 논슬립기능(79,000원 신제품 출시 한정가)
-약 ${matCounts['빅토리매트']}장 예상됩니다.
-
-✅ 실제 시공 후 사용된 매트만큼만 결제해 주시면 됩니다.
-✅ 견적과 실제 시공 장수에 오차가 있을 수 있습니다.
-✅ 본사 직접 시공 & 전문가 시공 방침을 준수합니다.
-✅ 80매트 기준 50장 미만 시공비가 10만원 발생됩니다.
-✅ 100/120매트 기준 40장 미만 시공비가 10만원 발생됩니다.
-            `.trim(),
-            '충청': `
-🎉 예상 견적은 다음과 같습니다
-
-💚자이언트매트💚_80x80(44,000원)
-💚자이언트플러스매트💚_80x80+논슬립기능(47,000원)
-약 ${matCounts['자이언트매트']}장 예상됩니다.
-
-💚자이언트와이드매트💚_120x80매트 논슬립기능(75,000원)
-💚빅토리매트💚_1미터x1미터+ 논슬립기능(79,000원 신제품 출시 한정가)
-약 ${matCounts['빅토리매트']}장 예상됩니다.
-
-✅ 실제 시공 후 사용된 매트만큼만 결제해 주시면 됩니다.
-✅ 견적과 실제 시공 장수에 오차가 있을 수 있습니다.
-✅ 본사 직접 시공 & 전문가 시공 방침에 따라 시공비가 10만 원 부과됩니다.
-            `.trim(),
-            '지방': `
-🎉 예상 견적은 다음과 같습니다
-
-💚자이언트매트💚_80x80(44,000원)
-💚자이언트플러스매트💚_80x80+논슬립기능(47,000원)
-약 ${matCounts['자이언트매트']}장 예상됩니다.
-
-💚자이언트와이드매트💚_120x80매트 논슬립기능(75,000원)
-💚빅토리매트💚_1미터x1미터+ 논슬립기능(79,000원 신제품 출시 한정가)
-약 ${matCounts['빅토리매트']}장 예상됩니다.
-
-✅ 실제 시공 후 사용된 매트만큼만 결제해 주시면 됩니다.
-✅ 견적과 실제 시공 장수에 오차가 있을 수 있습니다.
-✅ 본사 직접 시공 & 전문가 시공 방침에 따라 시공비, 출장비 각 10만 원 부과됩니다.
-            `.trim()
-        };
-
-        const textArea = document.createElement('textarea');
-        textArea.value = regionText[region];
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textArea);
-        alert('결과가 클립보드에 복사되었습니다.');
-    }
-
-    function copyRegion(region) {
-        let matCounts = {
-            '자이언트매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[0].split(': ')[1],
-            '빅토리매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[1].split(': ')[1],
-            '자이언트와이드매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[2].split(': ')[1]
-        };
-
-        let prices = {
-            '자이언트매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[0].split(': ')[1],
-            '자이언트플러스매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[1].split(': ')[1],
-            '빅토리매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[2].split(': ')[1],
-            '자이언트와이드매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[3].split(': ')[1]
-        };
-
-        let regionText = {
-            '수도권': `
-🎉 예상 견적은 다음과 같습니다
-
-💚자이언트매트💚_80x80(44,000원)
-💚자이언트플러스매트💚_80x80+논슬립기능(47,000원)
-약 ${matCounts['자이언트매트']} 예상됩니다.
-
-💚자이언트와이드매트💚_120x80매트 논슬립기능(75,000원)
-💚빅토리매트💚_1미터x1미터+ 논슬립기능(79,000원 신제품 출시 한정가)
-약 ${matCounts['빅토리매트']} 예상됩니다.
-
-✅ 실제 시공 후 사용된 매트만큼만 결제해 주시면 됩니다.
-✅ 견적과 실제 시공 장수에 오차가 있을 수 있습니다.
-✅ 본사 직접 시공 & 전문가 시공 방침을 준수합니다.
-✅ 80매트 기준 50장 미만 시공비가 10만원 발생됩니다.
-✅ 100/120매트 기준 40장 미만 시공비가 10만원 발생됩니다.
-            `.trim(),
-            '충청': `
-🎉 예상 견적은 다음과 같습니다
-
-💚자이언트매트💚_80x80(44,000원)
-💚자이언트플러스매트💚_80x80+논슬립기능(47,000원)
-약 ${matCounts['자이언트매트']} 예상됩니다.
-
-💚자이언트와이드매트💚_120x80매트 논슬립기능(75,000원)
-💚빅토리매트💚_1미터x1미터+ 논슬립기능(79,000원 신제품 출시 한정가)
-약 ${matCounts['빅토리매트']} 예상됩니다.
-
-✅ 실제 시공 후 사용된 매트만큼만 결제해 주시면 됩니다.
-✅ 견적과 실제 시공 장수에 오차가 있을 수 있습니다.
-✅ 본사 직접 시공 & 전문가 시공 방침에 따라 시공비가 10만 원 부과됩니다.
-            `.trim(),
-            '지방': `
-🎉 예상 견적은 다음과 같습니다
-
-💚자이언트매트💚_80x80(44,000원)
-💚자이언트플러스매트💚_80x80+논슬립기능(47,000원)
-약 ${matCounts['자이언트매트']} 예상됩니다.
-
-💚자이언트와이드매트💚_120x80매트 논슬립기능(75,000원)
-💚빅토리매트💚_1미터x1미터+ 논슬립기능(79,000원 신제품 출시 한정가)
-약 ${matCounts['빅토리매트']} 예상됩니다.
-
-✅ 실제 시공 후 사용된 매트만큼만 결제해 주시면 됩니다.
-✅ 견적과 실제 시공 장수에 오차가 있을 수 있습니다.
-✅ 본사 직접 시공 & 전문가 시공 방침에 따라 시공비, 출장비 각 10만 원 부과됩니다.
-            `.trim()
-        };
-
-        const textArea = document.createElement('textarea');
-        textArea.value = regionText[region];
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textArea);
-        alert('결과가 클립보드에 복사되었습니다.');
-    }
-
-    function calculate() {
-        let rooms = [
-            {name: '거실', width: document.getElementById('거실_가로').value, length: document.getElementById('거실_세로').value},
-            {name: '복도', width: document.getElementById('복도_가로').value, length: document.getElementById('복도_세로').value},
-            {name: '주방', width: document.getElementById('주방_가로').value, length: document.getElementById('주방_세로').value},
-            {name: '작은 방', width: document.getElementById('작은방_가로').value, length: document.getElementById('작은방_세로').value},
-            {name: '큰 방', width: document.getElementById('큰방_가로').value, length: document.getElementById('큰방_세로').value},
-            {name: '발코니', width: document.getElementById('발코니_가로').value, length: document.getElementById('발코니_세로').value},
-            {name: '기타', width: document.getElementById('기타_가로').value, length: document.getElementById('기타_세로').value}
-        ];
-
-        let totalMats50x50 = 0;
-        rooms.forEach(room => {
-            let width = parseFloat(room.width) || 0;
-            let length = parseFloat(room.length) || 0;
-            let matsAlongWidth = Math.ceil(width / 50);
-            let matsAlongLength = Math.ceil(length / 50);
-            totalMats50x50 += matsAlongWidth * matsAlongLength;
-        });
-
-        let matCounts = {
-            '80x80': Math.floor(totalMats50x50 / 2.56),
-            '100x100': Math.floor(totalMats50x50 / 2.56 * 2.56 / 3.8),
-            '120x80': Math.floor(totalMats50x50 / 2.56 * 2.56 / 3.8)
-        };
-
-        let prices = {
-            '자이언트매트': matCounts['80x80'] * 44000,
-            '자이언트플러스매트': matCounts['80x80'] * 47000,
-            '빅토리매트': matCounts['100x100'] * 79000,
-            '자이언트와이드매트': matCounts['120x80'] * 75000
-        };
-
-        let resultHtml = `
-            <table>
-                <tr>
-                    <th>필요한 매트 수</th>
-                    <th>가격</th>
-                </tr>
-                <tr>
-                    <td>
-                        80x80: ${matCounts['80x80']}장<br>
-                        100x100: ${matCounts['100x100']}장<br>
-                        120x80: ${matCounts['120x80']}장
-                    </td>
-                    <td>
-                        자이언트매트: ${prices['자이언트매트'].toLocaleString()}원<br>
-                        자이언트플러스매트: ${prices['자이언트플러스매트'].toLocaleString()}원<br>
-                        빅토리매트: ${prices['빅토리매트'].toLocaleString()}원<br>
-                        자이언트와이드매트: ${prices['자이언트와이드매트'].toLocaleString()}원
-                    </td>
-                </tr>
-            </table>
-            <button class="copy-button" onclick="copyResult()">결과 복사하기</button>
-            <div id="estimate-guide">
-                <h2>예상 견적 안내</h2>
-                <div class="region-buttons">
-                    <button class="region-button" onclick="copyRegion('수도권')"><b>수도권</b></button>
-                    <button class="region-button" onclick="copyRegion('충청')"><b>충청</b></button>
-                    <button class="region-button" onclick="copyRegion('지방')"><b>지방</b></button>
-                </div>
-            </div>
-        `;
-
-        document.getElementById('result').innerHTML = resultHtml;
-        document.getElementById('estimate-guide').style.display = 'block';
-    }
-
-    function resetValues() {
-        document.querySelectorAll('input[type="number"]').forEach(input => {
-            input.value = 0;
-        });
-        document.getElementById('result').innerHTML = "";
-        document.getElementById('estimate-guide').style.display = 'none';
-    }
-
-    function copyResult() {
-        let matCounts = {
-            '자이언트매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[0].split(': ')[1],
-            '빅토리매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[1].split(': ')[1],
-            '자이언트와이드매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[2].split(': ')[1]
-        };
-
-        let prices = {
-            '자이언트매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[0].split(': ')[1],
-            '자이언트플러스매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[1].split(': ')[1],
-            '빅토리매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[2].split(': ')[1],
-            '자이언트와이드매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[3].split(': ')[1]
-        };
-
-        let resultText = `
-자이언트매트: ${matCounts['자이언트매트']}, ${prices['자이언트매트']}
-자이언트플러스매트: ${matCounts['자이언트매트']}, ${prices['자이언트플러스매트']}
-빅토리매트: ${matCounts['빅토리매트']}, ${prices['빅토리매트']}
-자이언트와이드매트: ${matCounts['자이언트와이드매트']}, ${prices['자이언트와이드매트']}
-        `.trim();
-
-        const textArea = document.createElement('textarea');
-        textArea.value = resultText;
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textArea);
-        alert('결과가 클립보드에 복사되었습니다.');
+        copyText(macroText[macro]);
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        showTab('estimate');
+        showTab('calculator');
     });
 </script>
 </body>
