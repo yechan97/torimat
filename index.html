@@ -709,7 +709,7 @@
 자이언트플러스매트: ${matCounts['자이언트매트']}, ${prices['자이언트플러스매트']}
 빅토리매트: ${matCounts['빅토리매트']}, ${prices['빅토리매트']}
 자이언트와이드매트: ${matCounts['자이언트와이드매트']}, ${prices['자이언트와이드매트']}
-            `.trim();
+        `.trim();
 
             const textArea = document.createElement('textarea');
             textArea.value = resultText;
@@ -890,6 +890,11 @@ http://pf.kakao.com/_xnAFEG
 
         document.addEventListener('DOMContentLoaded', function () {
             showTab('estimate');
+            document.querySelectorAll('.region-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    copyRegionEstimate(button.innerText);
+                });
+            });
         });
     </script>
 </body>
