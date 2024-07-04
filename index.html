@@ -205,52 +205,44 @@
             <h1>토리매트 계산기</h1>
             <div class="input-group">
                 <label><b>거실</b></label>
-                <input type="number" id="거실_가로" placeholder="가로(cm)" value="0">
-                <input type="number" id="거실_세로" placeholder="세로(cm)" value="0">
+                <input type="number" id="거실_가로" placeholder="가로(cm)" value="0" onfocus="this.value=''">
+                <input type="number" id="거실_세로" placeholder="세로(cm)" value="0" onfocus="this.value=''">
             </div>
             <div class="input-group">
                 <label><b>복도</b></label>
-                <input type="number" id="복도_가로" placeholder="가로(cm)" value="0">
-                <input type="number" id="복도_세로" placeholder="세로(cm)" value="0">
+                <input type="number" id="복도_가로" placeholder="가로(cm)" value="0" onfocus="this.value=''">
+                <input type="number" id="복도_세로" placeholder="세로(cm)" value="0" onfocus="this.value=''">
             </div>
             <div class="input-group">
                 <label><b>주방</b></label>
-                <input type="number" id="주방_가로" placeholder="가로(cm)" value="0">
-                <input type="number" id="주방_세로" placeholder="세로(cm)" value="0">
+                <input type="number" id="주방_가로" placeholder="가로(cm)" value="0" onfocus="this.value=''">
+                <input type="number" id="주방_세로" placeholder="세로(cm)" value="0" onfocus="this.value=''">
             </div>
             <div class="input-group">
                 <label><b>작은 방</b></label>
-                <input type="number" id="작은방_가로" placeholder="가로(cm)" value="0">
-                <input type="number" id="작은방_세로" placeholder="세로(cm)" value="0">
+                <input type="number" id="작은방_가로" placeholder="가로(cm)" value="0" onfocus="this.value=''">
+                <input type="number" id="작은방_세로" placeholder="세로(cm)" value="0" onfocus="this.value=''">
             </div>
             <div class="input-group">
                 <label><b>큰 방</b></label>
-                <input type="number" id="큰방_가로" placeholder="가로(cm)" value="0">
-                <input type="number" id="큰방_세로" placeholder="세로(cm)" value="0">
+                <input type="number" id="큰방_가로" placeholder="가로(cm)" value="0" onfocus="this.value=''">
+                <input type="number" id="큰방_세로" placeholder="세로(cm)" value="0" onfocus="this.value=''">
             </div>
             <div class="input-group">
                 <label><b>발코니</b></label>
-                <input type="number" id="발코니_가로" placeholder="가로(cm)" value="0">
-                <input type="number" id="발코니_세로" placeholder="세로(cm)" value="0">
+                <input type="number" id="발코니_가로" placeholder="가로(cm)" value="0" onfocus="this.value=''">
+                <input type="number" id="발코니_세로" placeholder="세로(cm)" value="0" onfocus="this.value=''">
             </div>
             <div class="input-group">
                 <label><b>기타</b></label>
-                <input type="number" id="기타_가로" placeholder="가로(cm)" value="0">
-                <input type="number" id="기타_세로" placeholder="세로(cm)" value="0">
+                <input type="number" id="기타_가로" placeholder="가로(cm)" value="0" onfocus="this.value=''">
+                <input type="number" id="기타_세로" placeholder="세로(cm)" value="0" onfocus="this.value=''">
             </div>
             <div class="buttons">
                 <button class="calculate" onclick="calculate()">계산하기</button>
                 <button class="reset" onclick="resetValues()">초기화</button>
             </div>
             <div id="result"></div>
-            <div id="estimate-guide" style="display: none;">
-                <h2>예상 견적 안내</h2>
-                <div class="region-buttons">
-                    <button class="region-button" onclick="copyRegion('수도권')"><b>수도권</b></button>
-                    <button class="region-button" onclick="copyRegion('충청')"><b>충청</b></button>
-                    <button class="region-button" onclick="copyRegion('지방')"><b>지방</b></button>
-                </div>
-            </div>
         </div>
         <div id="estimate" class="tab-content hidden">
             <h1>견적 양식</h1>
@@ -265,11 +257,11 @@
             <div class="quick-buttons-container" id="quick-buttons-container"></div>
             <div class="input-group">
                 <label><b>80매트</b></label>
-                <input type="number" id="mat80" placeholder="0" value="0" oninput="updateMat100()">
+                <input type="number" id="mat80" placeholder="0" value="0" onfocus="this.value=''" oninput="updateMat100()">
             </div>
             <div class="input-group">
                 <label><b>100매트</b></label>
-                <input type="number" id="mat100" placeholder="0" value="0">
+                <input type="number" id="mat100" placeholder="0" value="0" onfocus="this.value=''">
             </div>
             <div class="buttons">
                 <button class="calculate" onclick="calculateEstimate()">견적 계산하기</button>
@@ -354,7 +346,9 @@
         document.querySelectorAll('.quick-button').forEach(button => {
             button.classList.remove('active');
         });
-        document.querySelector(`.quick-button[onclick*="${buttonId}"]`).classList.add('active');
+        if (activeButton) {
+            document.querySelector(`.quick-button[onclick*="${buttonId}"]`).classList.add('active');
+        }
     }
 
     function setMats(mat80, mat100) {
@@ -459,22 +453,24 @@
         };
 
         let resultHtml = `
-            <div>
-                자이언트매트: ${mat80}장, ${price80['자이언트매트'].toLocaleString()}원
-                <button class="copy-button" onclick="copyText('자이언트매트: ${mat80}장, ${price80['자이언트매트'].toLocaleString()}원')">복사하기</button>
-            </div>
-            <div>
-                자이언트플러스매트: ${mat80}장, ${price80['자이언트플러스매트'].toLocaleString()}원
-                <button class="copy-button" onclick="copyText('자이언트플러스매트: ${mat80}장, ${price80['자이언트플러스매트'].toLocaleString()}원')">복사하기</button>
-            </div>
-            <div>
-                자이언트와이드매트: ${mat100}장, ${price100['자이언트와이드매트'].toLocaleString()}원
-                <button class="copy-button" onclick="copyText('자이언트와이드매트: ${mat100}장, ${price100['자이언트와이드매트'].toLocaleString()}원')">복사하기</button>
-            </div>
-            <div>
-                빅토리매트: ${mat100}장, ${price100['빅토리매트'].toLocaleString()}원
-                <button class="copy-button" onclick="copyText('빅토리매트: ${mat100}장, ${price100['빅토리매트'].toLocaleString()}원')">복사하기</button>
-            </div>
+            <table>
+                <tr>
+                    <td>자이언트매트: ${mat80}장, ${price80['자이언트매트'].toLocaleString()}원</td>
+                    <td><button class="copy-button" onclick="copyText('자이언트매트: ${mat80}장, ${price80['자이언트매트'].toLocaleString()}원')">복사하기</button></td>
+                </tr>
+                <tr>
+                    <td>자이언트플러스매트: ${mat80}장, ${price80['자이언트플러스매트'].toLocaleString()}원</td>
+                    <td><button class="copy-button" onclick="copyText('자이언트플러스매트: ${mat80}장, ${price80['자이언트플러스매트'].toLocaleString()}원')">복사하기</button></td>
+                </tr>
+                <tr>
+                    <td>자이언트와이드매트: ${mat100}장, ${price100['자이언트와이드매트'].toLocaleString()}원</td>
+                    <td><button class="copy-button" onclick="copyText('자이언트와이드매트: ${mat100}장, ${price100['자이언트와이드매트'].toLocaleString()}원')">복사하기</button></td>
+                </tr>
+                <tr>
+                    <td>빅토리매트: ${mat100}장, ${price100['빅토리매트'].toLocaleString()}원</td>
+                    <td><button class="copy-button" onclick="copyText('빅토리매트: ${mat100}장, ${price100['빅토리매트'].toLocaleString()}원')">복사하기</button></td>
+                </tr>
+            </table>
         `;
 
         document.getElementById('price-result').innerHTML = resultHtml;
@@ -494,6 +490,38 @@
         document.execCommand('copy');
         document.body.removeChild(textArea);
         alert('복사되었습니다.');
+    }
+
+    function copyResult() {
+        let matCounts = {
+            '80x80': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[0].split(': ')[1].replace('장', '').trim(),
+            '100x100': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[1].split(': ')[1].replace('장', '').trim(),
+            '120x80': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[2].split(': ')[1].replace('장', '').trim()
+        };
+
+        let prices = {
+            '자이언트매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[0].split(': ')[1],
+            '자이언트플러스매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[1].split(': ')[1],
+            '빅토리매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[2].split(': ')[1],
+            '자이언트와이드매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[3].split(': ')[1]
+        };
+
+        let resultText = `
+총 예상 금액은 다음과 같습니다!
+
+자이언트매트: ${matCounts['80x80']}장, ${prices['자이언트매트']}
+자이언트플러스매트: ${matCounts['80x80']}장, ${prices['자이언트플러스매트']}
+빅토리매트: ${matCounts['100x100']}장, ${prices['빅토리매트']}
+자이언트와이드매트: ${matCounts['120x80']}장, ${prices['자이언트와이드매트']}
+        `.trim();
+
+        const textArea = document.createElement('textarea');
+        textArea.value = resultText;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        alert('결과가 클립보드에 복사되었습니다.');
     }
 
     function copyRegion(region) {
@@ -554,7 +582,7 @@
     }
 
     function copyMacro(macro) {
-        const macroText = {
+        let macroText = {
             '인삿말': `
 ✅ 안녕하세요💕
 안전해서 더욱 안심이 되는 매트!!
