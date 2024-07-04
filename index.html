@@ -48,6 +48,7 @@
             border-radius: 5px;
             font-weight: bold;
             margin: 0 5px;
+            font-family: 'Gowun Dodum', sans-serif;
         }
         .tab-buttons button.active {
             background-color: #FF8A65; /* Active tab color */
@@ -131,6 +132,7 @@
             border: none;
             border-radius: 5px;
             display: inline-block;
+            font-family: 'Gowun Dodum', sans-serif;
         }
         .quick-button {
             background-color: #64B5F6; /* Blue */
@@ -206,7 +208,7 @@
             </div>
             <div id="result"></div>
         </div>
-        <div id="estimate" class="tab-content hidden">
+        <div id="estimate" class="tab-content">
             <h1>견적 양식</h1>
             <div class="quick-buttons-container">
                 <button class="quick-button" onclick="toggleSubButtons('25', this)">25평/59㎡</button>
@@ -217,8 +219,8 @@
                 <button class="quick-button" onclick="toggleSubButtons('중후40', this)">40평중후</button>
             </div>
             <div id="sub-buttons-container" class="hidden">
-                <button class="quick-button sub-button" onclick="setEstimateValues('거복')">거복</button>
-                <button class="quick-button sub-button" onclick="setEstimateValues('거복주')">거복주</button>
+                <button class="quick-button sub-button hidden" id="sub-button-25" onclick="setEstimateValues('거복')">거복</button>
+                <button class="quick-button sub-button hidden" id="sub-button-25-2" onclick="setEstimateValues('거복주')">거복주</button>
                 <button class="quick-button sub-button hidden" id="sub-button-34" onclick="setEstimateValues('거복아')">거복아</button>
             </div>
             <div class="input-group">
@@ -235,7 +237,7 @@
             </div>
             <div id="price-result"></div>
         </div>
-        <div id="info" class="tab-content hidden">
+        <div id="info" class="tab-content">
             <h1>카카오톡/네이버톡톡/문자</h1>
             <div class="macro-buttons">
                 <button class="macro-button" onclick="copyMacro('인삿말')">인삿말</button>
@@ -253,9 +255,9 @@
     <script>
         function showTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.style.display = 'none';
+                tab.classList.remove('active');
             });
-            document.getElementById(tabId).style.display = 'block';
+            document.getElementById(tabId).classList.add('active');
             document.querySelectorAll('.tab-buttons button').forEach(button => {
                 button.classList.remove('active');
             });
@@ -341,6 +343,7 @@
         function calculateEstimate() {
             const mat80 = parseInt(document.getElementById('mat80').value) || 0;
             const mat100 = Math.floor(mat80 * 2.56 / 3.8);
+            document.getElementById('mat100').value = mat100;
 
             const price80 = {
                 '자이언트매트': mat80 * 44000,
