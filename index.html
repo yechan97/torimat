@@ -266,20 +266,6 @@
             color: #fff;
             font-family: 'Gowun Dodum', sans-serif;
         }
-
-        .reservation-button {
-            margin: 5px;
-            padding: 10px 15px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            display: inline-block;
-            background-color: #FF7043;
-            color: #fff;
-            font-family: 'Gowun Dodum', sans-serif;
-        }
     </style>
 </head>
 
@@ -375,7 +361,6 @@
                 <button class="message-button" onclick="copyMessage('공기 순환로')">공기 순환로</button>
                 <button class="message-button" onclick="copyMessage('예약금 안내')">예약금 안내</button>
                 <button class="message-button" onclick="copyMessage('마무리 인사')">마무리 인사</button>
-                <button class="reservation-button" onclick="copyReservationForm()">예약 양식</button>
             </div>
         </div>
         <div class="footer">
@@ -596,6 +581,193 @@
             alert('결과가 클립보드에 복사되었습니다.');
         }
 
+        function calculate() {
+            let rooms = [
+                {
+                    name: '거실',
+                    width: document.getElementById('거실_가로').value,
+                    length: document.getElementById('거실_세로').value
+                },
+                {
+                    name: '복도',
+                    width: document.getElementById('복도_가로').value,
+                    length: document.getElementById('복도_세로').value
+                },
+                {
+                    name: '주방',
+                    width: document.getElementById('주방_가로').value,
+                    length: document.getElementById('주방_세로').value
+                },
+                {
+                    name: '작은 방',
+                    width: document.getElementById('작은방_가로').value,
+                    length: document.getElementById('작은방_세로').value
+                },
+                {
+                    name: '큰 방',
+                    width: document.getElementById('큰방_가로').value,
+                    length: document.getElementById('큰방_세로').value
+                },
+                {
+                    name: '발코니',
+                    width: document.getElementById('발코니_가로').value,
+                    length: document.getElementById('발코니_세로').value
+                },
+                {
+                    name: '기타',
+                    width: document.getElementById('기타_가로').value,
+                    length: document.getElementById('기타_세로').value
+                }
+            ];
+
+            let totalMats50x50 = 0;
+            rooms.forEach(room => {
+                let width = parseFloat(room.width) || 0;
+                let length = parseFloat(room.length) || 0;
+                let matsAlongWidth = Math.ceil(width / 50);
+                let matsAlongLength = Math.ceil(length / 50);
+                totalMats50x50 += matsAlongWidth * matsAlongLength;
+            });
+
+            let matCounts = {
+                '80x80': Math.floor(totalMats50x50 / 2.56),
+                '100x100': Math.floor(totalMats50x50 / 2.56 * 2.56 / 3.8),
+                '120x80': Math.floor(totalMats50x50 / 2.56 * 2.56 / 3.8)
+            };
+
+            let prices = {
+                '자이언트매트': matCounts['80x80'] * 44000,
+                '자이언트플러스매트': matCounts['80x80'] * 47000,
+                '빅토리매트': matCounts['100x100'] * 79000,
+                '자이언트와이드매트': matCounts['120x80'] * 75000
+            };
+
+            let resultHtml = `
+            <table>
+                <tr>
+                    <th>필요한 매트 수</th>
+                    <th>가격</th>
+                </tr>
+                <tr>
+                    <td>
+                        80x80: ${matCounts['80x80']}장<br>
+                        100x100: ${matCounts['100x100']}장<br>
+                        120x80: ${matCounts['120x80']}장
+                    </td>
+                    <td>
+                        자이언트매트: ${prices['자이언트매트'].toLocaleString()}원<br>
+                        자이언트플러스매트: ${prices['자이언트플러스매트'].toLocaleString()}원<br>
+                        빅토리매트: ${prices['빅토리매트'].toLocaleString()}원<br>
+                        자이언트와이드매트: ${prices['자이언트와이드매트'].toLocaleString()}원
+                    </td>
+                </tr>
+            </table>
+            <button class="copy-button" onclick="copyResult()">결과 복사하기</button>
+        `;
+
+            document.getElementById('result').innerHTML = resultHtml;
+        }
+
+        function resetValues() {
+            document.querySelectorAll('input[type="number"]').forEach(input => {
+                input.value = 0;
+            });
+            document.getElementById('result').innerHTML = "";
+        }
+
+        function copyResult() {
+            let matCounts = {
+                '자이언트매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[0].split(': ')[1],
+                '빅토리매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[1].split(': ')[1],
+                '자이언트와이드매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[2].split(': ')[1]
+            };
+
+            let prices = {
+                '자이언트매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[0].split(': ')[1],
+                '자이언트플러스매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[1].split(': ')[1],
+                '빅토리매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split(': ')[1].split(': ')[1],
+                '자이언트와이드매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[3].split(': ')[1]
+            };
+
+            let resultText = `
+자이언트매트: ${matCounts['자이언트매트']}, ${prices['자이언트매트']}
+자이언트플러스매트: ${matCounts['자이언트매트']}, ${prices['자이언트플러스매트']}
+빅토리매트: ${matCounts['빅토리매트']}, ${prices['빅토리매트']}
+자이언트와이드매트: ${matCounts['자이언트와이드매트']}, ${prices['자이언트와이드매트']}
+        `.trim();
+
+            const textArea = document.createElement('textarea');
+            textArea.value = resultText;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            alert('결과가 클립보드에 복사되었습니다.');
+        }
+
+        function copyRegionEstimate2(region) {
+            const mat80 = parseInt(document.getElementById('mat80').value) || 0;
+            const mat100 = parseInt(document.getElementById('mat100').value) || 0;
+
+            const regionText = {
+                '수도권': `
+🎉 예상 견적은 다음과 같습니다
+
+💚자이언트매트💚_80x80(44,000원)
+💚자이언트플러스매트💚_80x80+논슬립기능(47,000원)
+약 ${mat80}장 예상됩니다.
+
+💚자이언트와이드매트💚_120x80매트 논슬립기능(75,000원)
+💚빅토리매트💚_1미터x1미터+ 논슬립기능(79,000원 신제품 출시 한정가)
+약 ${mat100}장 예상됩니다.
+
+✅ 실제 시공 후 사용된 매트만큼만 결제해 주시면 됩니다.
+✅ 견적과 실제 시공 장수에 오차가 있을 수 있습니다.
+✅ 본사 직접 시공 & 전문가 시공 방침을 준수합니다.
+✅ 80매트 기준 50장 미만 시공비가 10만원 발생됩니다.
+✅ 100/120매트 기준 40장 미만 시공비가 10만원 발생됩니다.
+                `.trim(),
+                '충청': `
+🎉 예상 견적은 다음과 같습니다
+
+💚자이언트매트💚_80x80(44,000원)
+💚자이언트플러스매트💚_80x80+논슬립기능(47,000원)
+약 ${mat80}장 예상됩니다.
+
+💚자이언트와이드매트💚_120x80매트 논슬립기능(75,000원)
+💚빅토리매트💚_1미터x1미터+ 논슬립기능(79,000원 신제품 출시 한정가)
+약 ${mat100}장 예상됩니다.
+
+✅ 실제 시공 후 사용된 매트만큼만 결제해 주시면 됩니다.
+✅ 견적과 실제 시공 장수에 오차가 있을 수 있습니다.
+✅ 본사 직접 시공 & 전문가 시공 방침에 따라 시공비가 10만 원 부과됩니다.
+                `.trim(),
+                '지방': `
+🎉 예상 견적은 다음과 같습니다
+
+💚자이언트매트💚_80x80(44,000원)
+💚자이언트플러스매트💚_80x80+논슬립기능(47,000원)
+약 ${mat80}장 예상됩니다.
+
+💚자이언트와이드매트💚_120x80매트 논슬립기능(75,000원)
+💚빅토리매트💚_1미터x1미터+ 논슬립기능(79,000원 신제품 출시 한정가)
+약 ${mat100}장 예상됩니다.
+
+✅ 실제 시공 후 사용된 매트만큼만 결제해 주시면 됩니다.
+✅ 견적과 실제 시공 장수에 오차가 있을 수 있습니다.
+✅ 본사 직접 시공 & 전문가 시공 방침에 따라 시공비, 출장비 각 10만 원 부과됩니다.
+                `.trim()
+            };
+
+            const textArea = document.createElement('textarea');
+            textArea.value = regionText[region];
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            alert('결과가 클립보드에 복사되었습니다.');
+        }
+
         function syncMat100() {
             const mat80 = parseInt(document.getElementById('mat80').value) || 0;
             const mat100 = Math.floor(mat80 * 2.56 / 3.8);
@@ -662,7 +834,8 @@ http://pf.kakao.com/_xnAFEG
 
 그러한 이슈를 해결하기 위해 밑면에 공기 순환로를 우레탄으로 채우고, 항균 및 곰팡이 방지 처리를 해놓았습니다.
 
-위 말씀드린 처리 후 액체류가 새어나가게 하지 않기 위해 압박 및 밀폐 전문 시공방식을 채택하기에 바닥 손상도가 최소화된 최신의 매트라고 말씀드릴 수 있습니다.
+바닥에 시공되는 매트이기 때문에 "0.01프로 조차 바닥에 손상이 없다" 라고 말씀 드릴순 없지만, 위 말씀드린 처리 후 
+압박 및 밀폐 전문 시공방식을 채택하기에 바닥 손상도가 최소화된 최신의 매트라고 말씀드릴 수 있습니다.
 
 품질력, 시공실력이 뛰어난 토리매트를 경험해보세요💞
             `.trim(),
@@ -694,32 +867,6 @@ http://pf.kakao.com/_xnAFEG
             document.execCommand('copy');
             document.body.removeChild(textArea);
             alert('메시지가 클립보드에 복사되었습니다.');
-        }
-
-        function copyReservationForm() {
-            const reservationText = `
-시공 예약을 위해 빈칸 기입 및 확인 해주세요❗
-
-날짜: 
-
-성함:
-
-연락처:  
-
-주소:
-
-매트 종류 및 색상:
-
-시공범위:
-            `.trim();
-            
-            const textArea = document.createElement('textarea');
-            textArea.value = reservationText;
-            document.body.appendChild(textArea);
-            textArea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textArea);
-            alert('예약 양식이 클립보드에 복사되었습니다.');
         }
 
         document.addEventListener('DOMContentLoaded', function () {
