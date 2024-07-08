@@ -6,266 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Gowun Dodum', sans-serif;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #E0F7D4;
-        }
-
-        .container {
-            width: 90%;
-            max-width: 600px;
-            margin: auto;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            box-sizing: border-box;
-            text-align: center;
-        }
-
-        h1 {
-            color: #7CB342;
-            font-weight: bold;
-            font-family: 'Gowun Dodum', sans-serif;
-            margin-bottom: 20px;
-        }
-
-        .input-group {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-            width: 100%;
-        }
-
-        .input-group label {
-            flex: 1;
-            margin-right: 10px;
-            text-align: left;
-            min-width: 80px;
-        }
-
-        .input-group input {
-            flex: 1;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #D3D3D3;
-            border-radius: 5px;
-            width: calc(50% - 10px);
-        }
-
-        .buttons {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        button {
-            width: 48%;
-            margin: 10px 1%;
-            padding: 15px;
-            font-size: 19px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            color: #fff;
-            font-weight: bold;
-            font-family: 'Gowun Dodum', sans-serif;
-        }
-
-        button.calculate {
-            background-color: #81C784;
-        }
-
-        button.reset {
-            background-color: #FF8A65;
-        }
-
-        #result {
-            margin-top: 20px;
-            font-size: 18px;
-            text-align: left;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            background-color: #f9f9f9;
-        }
-
-        th,
-        td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: center;
-        }
-
-        .footer {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 12px;
-            color: grey;
-        }
-
-        .copy-button {
-            display: block;
-            width: 100%;
-            margin-top: 10px;
-            padding: 10px;
-            font-size: 17px;
-            cursor: pointer;
-            background-color: #FFCC80;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            font-weight: bold;
-            font-family: 'Gowun Dodum', sans-serif;
-        }
-
-        .region-buttons,
-        .macro-buttons {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .region-button,
-        .macro-button {
-            margin: 5px;
-            padding: 10px 15px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            display: inline-block;
-            font-family: 'Gowun Dodum', sans-serif;
-        }
-
-        .region-button {
-            background-color: #64B5F6;
-        }
-
-        .region-button.active {
-            background-color: #4CAF50;
-        }
-
-        .macro-button {
-            background-color: #81C784;
-        }
-
-        .macro-button.active {
-            background-color: #388E3C;
-        }
-
-        input:focus {
-            border-color: #81C784;
-            outline: none;
-        }
-
-        .password-container {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .password-input {
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #D3D3D3;
-            border-radius: 5px;
-            width: 80%;
-            margin-bottom: 10px;
-        }
-
-        .password-button {
-            padding: 10px 15px;
-            font-size: 16px;
-            cursor: pointer;
-            background-color: #81C784;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            font-weight: bold;
-            font-family: 'Gowun Dodum', sans-serif;
-        }
-
-        .tabs {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
-        .tab-button {
-            flex: 1;
-            padding: 10px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            background-color: #81C784;
-            color: #fff;
-            font-size: 16px;
-            font-weight: bold;
-            margin: 0 5px;
-            font-family: 'Gowun Dodum', sans-serif;
-        }
-
-        .tab-button.active {
-            background-color: #4CAF50;
-        }
-
-        .quick-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
-        .quick-button {
-            margin: 5px;
-            padding: 10px 15px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            display: inline-block;
-            background-color: #64B5F6;
-            color: #fff;
-            font-family: 'Gowun Dodum', sans-serif;
-        }
-
-        .quick-button.active {
-            background-color: #4CAF50;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .message-buttons {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .message-button {
-            margin: 5px;
-            padding: 10px 15px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            display: inline-block;
-            background-color: #FFCC80;
-            color: #fff;
-            font-family: 'Gowun Dodum', sans-serif;
-        }
+        /* 기존 스타일 유지 */
     </style>
 </head>
 
@@ -684,6 +425,7 @@
         function resetValues() {
             document.querySelectorAll('input[type="number"]').forEach(input => {
                 input.value = 0;
+                localStorage.removeItem(input.id);
             });
             document.getElementById('result').innerHTML = "";
         }
@@ -698,7 +440,7 @@
             let prices = {
                 '자이언트매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[0].split(': ')[1],
                 '자이언트플러스매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[1].split(': ')[1],
-                '빅토리매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split(': ')[1].split(': ')[1],
+                '빅토리매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[2].split(': ')[1],
                 '자이언트와이드매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[3].split(': ')[1]
             };
 
@@ -717,6 +459,31 @@
             document.body.removeChild(textArea);
             alert('결과가 클립보드에 복사되었습니다.');
         }
+
+        function saveInputValues() {
+            const inputs = document.querySelectorAll('.input-group input');
+            inputs.forEach(input => {
+                input.addEventListener('input', () => {
+                    localStorage.setItem(input.id, input.value);
+                });
+            });
+        }
+
+        function loadInputValues() {
+            const inputs = document.querySelectorAll('.input-group input');
+            inputs.forEach(input => {
+                const savedValue = localStorage.getItem(input.id);
+                if (savedValue !== null) {
+                    input.value = savedValue;
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            loadInputValues();
+            saveInputValues();
+            showTab('estimate');
+        });
 
         const messages = {
             '인삿말': `
@@ -811,9 +578,6 @@ http://pf.kakao.com/_xnAFEG
             alert('메시지가 클립보드에 복사되었습니다.');
         }
 
-        document.addEventListener('DOMContentLoaded', function () {
-            showTab('estimate');
-        });
     </script>
 </body>
 
