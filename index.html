@@ -361,6 +361,7 @@
                 <button class="message-button" onclick="copyMessage('공기 순환로')">공기 순환로</button>
                 <button class="message-button" onclick="copyMessage('예약금 안내')">예약금 안내</button>
                 <button class="message-button" onclick="copyMessage('마무리 인사')">마무리 인사</button>
+                <button class="message-button" onclick="copyMessage('예약 양식')">예약 양식</button>
             </div>
         </div>
         <div class="footer">
@@ -676,123 +677,37 @@
         }
 
         function copyResult() {
-            let matCounts = {
-                '자이언트매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[0].split(': ')[1],
-                '빅토리매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[1].split(': ')[1],
-                '자이언트와이드매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[2].split(': ')[1]
-            };
+    let matCounts = {
+        '자이언트매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[0].split(': ')[1],
+        '빅토리매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[1].split(': ')[1],
+        '자이언트와이드매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(1)').innerText.split('\n')[2].split(': ')[1]
+    };
 
-            let prices = {
-                '자이언트매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[0].split(': ')[1],
-                '자이언트플러스매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[1].split(': ')[1],
-                '빅토리매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split(': ')[1].split(': ')[1],
-                '자이언트와이드매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[3].split(': ')[1]
-            };
+    let prices = {
+        '자이언트매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[0].split(': ')[1],
+        '자이언트플러스매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[1].split(': ')[1],
+        '빅토리매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[2].split(': ')[1],
+        '자이언트와이드매트': document.querySelector('#result table tr:nth-child(2) td:nth-child(2)').innerText.split('\n')[3].split(': ')[1]
+    };
 
-            let resultText = `
+    let resultText = `
 자이언트매트: ${matCounts['자이언트매트']}, ${prices['자이언트매트']}
 자이언트플러스매트: ${matCounts['자이언트매트']}, ${prices['자이언트플러스매트']}
 빅토리매트: ${matCounts['빅토리매트']}, ${prices['빅토리매트']}
 자이언트와이드매트: ${matCounts['자이언트와이드매트']}, ${prices['자이언트와이드매트']}
-        `.trim();
+    `.trim();
 
-            const textArea = document.createElement('textarea');
-            textArea.value = resultText;
-            document.body.appendChild(textArea);
-            textArea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textArea);
-            alert('결과가 클립보드에 복사되었습니다.');
-        }
+    const textArea = document.createElement('textarea');
+    textArea.value = resultText;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textArea);
+    alert('결과가 클립보드에 복사되었습니다.');
+}
 
-        function copyRegionEstimate2(region) {
-            const mat80 = parseInt(document.getElementById('mat80').value) || 0;
-            const mat100 = parseInt(document.getElementById('mat100').value) || 0;
-
-            const regionText = {
-                '수도권': `
-🎉 예상 견적은 다음과 같습니다
-
-💚자이언트매트💚_80x80(44,000원)
-💚자이언트플러스매트💚_80x80+논슬립기능(47,000원)
-약 ${mat80}장 예상됩니다.
-
-💚자이언트와이드매트💚_120x80매트 논슬립기능(75,000원)
-💚빅토리매트💚_1미터x1미터+ 논슬립기능(79,000원 신제품 출시 한정가)
-약 ${mat100}장 예상됩니다.
-
-✅ 실제 시공 후 사용된 매트만큼만 결제해 주시면 됩니다.
-✅ 견적과 실제 시공 장수에 오차가 있을 수 있습니다.
-✅ 본사 직접 시공 & 전문가 시공 방침을 준수합니다.
-✅ 80매트 기준 50장 미만 시공비가 10만원 발생됩니다.
-✅ 100/120매트 기준 40장 미만 시공비가 10만원 발생됩니다.
-                `.trim(),
-                '충청': `
-🎉 예상 견적은 다음과 같습니다
-
-💚자이언트매트💚_80x80(44,000원)
-💚자이언트플러스매트💚_80x80+논슬립기능(47,000원)
-약 ${mat80}장 예상됩니다.
-
-💚자이언트와이드매트💚_120x80매트 논슬립기능(75,000원)
-💚빅토리매트💚_1미터x1미터+ 논슬립기능(79,000원 신제품 출시 한정가)
-약 ${mat100}장 예상됩니다.
-
-✅ 실제 시공 후 사용된 매트만큼만 결제해 주시면 됩니다.
-✅ 견적과 실제 시공 장수에 오차가 있을 수 있습니다.
-✅ 본사 직접 시공 & 전문가 시공 방침에 따라 시공비가 10만 원 부과됩니다.
-                `.trim(),
-                '지방': `
-🎉 예상 견적은 다음과 같습니다
-
-💚자이언트매트💚_80x80(44,000원)
-💚자이언트플러스매트💚_80x80+논슬립기능(47,000원)
-약 ${mat80}장 예상됩니다.
-
-💚자이언트와이드매트💚_120x80매트 논슬립기능(75,000원)
-💚빅토리매트💚_1미터x1미터+ 논슬립기능(79,000원 신제품 출시 한정가)
-약 ${mat100}장 예상됩니다.
-
-✅ 실제 시공 후 사용된 매트만큼만 결제해 주시면 됩니다.
-✅ 견적과 실제 시공 장수에 오차가 있을 수 있습니다.
-✅ 본사 직접 시공 & 전문가 시공 방침에 따라 시공비, 출장비 각 10만 원 부과됩니다.
-                `.trim()
-            };
-
-            const textArea = document.createElement('textarea');
-            textArea.value = regionText[region];
-            document.body.appendChild(textArea);
-            textArea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textArea);
-            alert('결과가 클립보드에 복사되었습니다.');
-        }
-
-        function syncMat100() {
-            const mat80 = parseInt(document.getElementById('mat80').value) || 0;
-            const mat100 = Math.floor(mat80 * 2.56 / 3.8);
-            document.getElementById('mat100').value = mat100;
-        }
-
-        function syncMat80() {
-            const mat100 = parseInt(document.getElementById('mat100').value) || 0;
-            let mat80;
-            if (mat100 === 47) {
-                mat80 = 68;
-            } else if (mat100 === 58) {
-                mat80 = 85;
-            } else if (mat100 === 43) {
-                mat80 = 63;
-            } else if (mat100 === 54) {
-                mat80 = 80;
-            } else {
-                mat80 = Math.round((mat100 * 3.8 / 2.56) * 10) / 10;
-            }
-            document.getElementById('mat80').value = mat80;
-        }
-
-        const messages = {
-            '인삿말': `
+const messages = {
+    '인삿말': `
 ✅ 안녕하세요💕
 안전해서 더욱 안심이 되는 매트!!
 💓토리매트💓 입니다
@@ -806,8 +721,8 @@
 품질1⃣위, 시공1⃣위, 고객만족1⃣위🌟
 
 ☝예상견적을 안내해 드릴게요
-            `.trim(),
-            '시공 사례': `
+    `.trim(),
+    '시공 사례': `
 시공 사례를 보실 수 있도록 링크 남겨 드릴게요👇
 
 💥블로그 시공 사례
@@ -823,29 +738,29 @@ http://pf.kakao.com/_xnAFEG
 
 ☎ 1544-0074
 ☎ 010-8200-8942
-            `.trim(),
-            '할인 안내': `
+    `.trim(),
+    '할인 안내': `
 💗지인 할인 5만원 가능합니다! (50장 이하 3만원)
 💗현금영수증 (x) 5만원 할인 가능합니다! (50장 이하 3만원)
 💗후기 2건 작성 3만원 할인 가능합니다!
-            `.trim(),
-            '공기 순환로': `
-공기 순환로가 있으면 공기가 통과되는 과정에서 마루 바닥면에 공기 순환로 모양대로 변색이 옵니다.
+    `.trim(),
+    '공기 순환로': `
+공기 순환로가 있으면 공기가 통과되는 과정에서 마루 바닥면에 공기 순환로 모양대로 변색이 생깁니다.
 
-그러한 이슈를 해결하기 위해 밑면에 공기 순환로를 우레탄으로 채우고, 항균 및 곰팡이 방지 처리를 해놓았습니다.
+이러한 문제를 해결하기 위해 밑면에 공기 순환로를 우레탄으로 채우고, 항균 및 곰팡이 방지 처리를 하였습니다.
 
-위 말씀드린 처리 후 액체류가 새어나가게 하지 않기 위해 압박 및 밀폐 전문 시공방식을 채택하기에 바닥 손상도가 최소화된 최신의 매트라고 말씀드릴 수 있습니다.
+위와 같은 처리를 한 후 액체류가 새어나가지 않도록 압박 및 밀폐 전문 시공방식을 채택하여 바닥 손상이 최소화된 최신 매트라고 말씀드릴 수 있습니다.
 
-품질력, 시공실력이 뛰어난 토리매트를 경험해보세요💞
-            `.trim(),
-            '예약금 안내': `
+품질과 시공 실력이 뛰어난 토리매트를 경험해보세요💞
+    `.trim(),
+    '예약금 안내': `
 356 1570 5481 03 농협 구선숙 입니다:)
 예약금 10만원 발생됩니다
 시공 5일 전 취소 및 환불 가능합니다^^
 
 입금 후 꼭 문자 주세요♡
-            `.trim(),
-            '마무리 인사': `
+    `.trim(),
+    '마무리 인사': `
 우리 가족의 생활 공간, 꼼꼼하게 비교해 보시고 선택하셔야겠지요~
 
 안전해서 더욱 안심이 되는 토리매트 입니다👍
@@ -855,24 +770,39 @@ http://pf.kakao.com/_xnAFEG
 
 무료 샘플 발송 서비스를 진행하고 있습니다. 
 필요하실 경우 말씀해 주시면 발송해드리겠습니다~!💞
-            `.trim()
+    `.trim(),
+    '예약 양식': `
+시공 예약을 위해 빈칸을 기입하고 확인해 주세요❗
 
-        };
+날짜:
 
-        function copyMessage(type) {
-            const textArea = document.createElement('textarea');
-            textArea.value = messages[type];
-            document.body.appendChild(textArea);
-            textArea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textArea);
-            alert('메시지가 클립보드에 복사되었습니다.');
-        }
+성함:
 
-        document.addEventListener('DOMContentLoaded', function () {
-            showTab('estimate');
-        });
+연락처:
+
+주소:
+
+매트 종류 및 색상:
+
+시공 범위:
+    `.trim()
+};
+
+function copyMessage(type) {
+    const textArea = document.createElement('textarea');
+    textArea.value = messages[type];
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textArea);
+    alert('메시지가 클립보드에 복사되었습니다.');
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    showTab('estimate');
+});
     </script>
 </body>
 
 </html>
+         
